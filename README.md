@@ -7,7 +7,8 @@
    alguien que venda alimentos en  la Universidad, gente para jugar y muchas otras cosas, basicamente es informacion que se pierde o no que no llega a quienes la 
    necesitan a tiempo.
 ## Descripcion de la aplicacion 
-   InfoLive Uach es una aplicacion web de tiempo real diseñada para ser el tablon de anuncios de la carrera 
+   InfoLive es una aplicacion web de tiempo real diseñada para ser el tablon de anuncios de la carrera
 ## Historias de Usuario
+   
    
    
