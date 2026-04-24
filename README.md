@@ -18,3 +18,5 @@
    Como **usuario** ver anuncios para estar **informado de diferentes cosas de mi comunidad** dentro de la carrera de informatica como cambios de sala de ultimo minuto, estudiandes vendiendo diferentes productos y de esta manera estar mas conectado con lo que pasa dentro de mi carrera/campus.
    
    Como **usuario** quiero **subir mi propio anuncio** y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce cacero o para informar a mis comapañeros de tal asignatura de un cambio de sala repentino o que el profesor no a llegado aun a la clase.
+
+   
