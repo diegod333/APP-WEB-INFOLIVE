@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+APP-WEB-INFOLIVE
+Contexto
+En la carrera de informatica hay mucha informancion suelta o que no se comparte facilmente con todos los estudiantes y actualmente la comunicacion depende de los grupos de Whatsapp u otra aplicacion que estan saturados de mensajes, stickers o Spam.
 
-## Getting Started
+Problema u oportunidad
+La informacion inmediata o de ultimo minuto , informacion que los estudiantes quieren y/o necesitan saber ese mismo dia, ya sea un cambio de sala, fecha de pruebas, alguien que venda alimentos en la Universidad, gente para jugar y muchas otras cosas, basicamente es informacion que se pierde o no que no llega a quienes la necesitan a tiempo.
 
-First, run the development server:
+Descripcion de la aplicacion
+InfoLive es una aplicacion web de tiempo real diseñada para ser el tablon de anuncios de la carrera
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Historias de Usuario
+Como usuario quiero poder elegir que tipo de anuncios se muestren en mi pantalla porque no quiero que me aparescan anuncios que no son de mi interes y no perderme de de los que si sean importantes para mi.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Como usuario me gustaria ver el nombre o alguna imagen y en que parte del campus esta la persona que se encuantra vediendo bebidas, algun dulce, etc para no estar buscando a ciegas a aquella pesona.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Como usuario quiero tener la capacidad de guardar anucios de mi interes para que no desaparesca con el tiempo y olvide la informacion.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Como usuario ver anuncios para estar informado de diferentes cosas de mi comunidad dentro de la carrera de informatica como cambios de sala de ultimo minuto, estudiandes vendiendo diferentes productos y de esta manera estar mas conectado con lo que pasa dentro de mi carrera/campus.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Como usuario quiero subir mi propio anuncio y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce cacero o para informar a mis comapañeros de tal asignatura de un cambio de sala repentino o que el profesor no a llegado aun a la clase.
