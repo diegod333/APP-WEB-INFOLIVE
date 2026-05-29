@@ -21,3 +21,10 @@ Como usuario ver anuncios para estar informado de diferentes cosas de mi comunid
 Como usuario quiero subir mi propio anuncio y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce cacero o para informar a mis comapañeros de tal asignatura de un cambio de sala repentino o que el profesor no a llegado aun a la clase.
 
 Como administrador quiero acceder a un log de eventos para saber como se usa la aplicacion 
+
+
+| id    | descripción | estimación horas | responsable | sprint | estado |
+| :---: | :---        | :---:            | :---:       | :---:  | :---:   |
+| 1.1 | diseñar un mockup de la lista de estudiantes | 1.5 | Julio | 1 | no comenzado |
+| 1.2 | seleccionar proyecto next bas para subir al repositorio | 1 | NN | 1 | no comenzado |
+| 1.3 | buscar y hacer un tutorial de chakraUI | 3 | Julio | 1 | no comenzado |
