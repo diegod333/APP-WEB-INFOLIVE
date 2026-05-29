@@ -10,7 +10,7 @@ InfoLive es una aplicacion web de tiempo real diseñada para ser el tablon de an
 
 Historias de Usuario:
 
-[HDU1] Como usuario quiero .
+[HDU1] Como vendedor quiero marcar mis productos como agotados o no disponibles.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
@@ -18,7 +18,7 @@ Historias de Usuario:
 | 1.2 |  | 0 |  | 1 | no comenzado |
 | 1.3 |  | 0 |  | 1 | no comenzado |
 
-[HDU2] Como usuario me gustaria ver el nombre o alguna imagen y en que parte del campus esta la persona que se encuantra vediendo bebidas, algun dulce, etc para no estar buscando a ciegas a aquella pesona.
+[HDU2] Como usuario me gustaria ver el nombre o alguna imagen de ser posible de la persona que este vendiendo ademas de algo que me indique en que parte del campus esta la persona que se encuantra vediendo bebidas, algun dulce, etc para no estar buscando a ciegas a aquella pesona.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
@@ -34,7 +34,7 @@ Historias de Usuario:
 | 1.2 |  | 0 |  | 1 | no comenzado |
 | 1.3 |  | 0 |  | 1 | no comenzado |
 
-[HDU4] Como usuario quiero
+[HDU4] Como usuario quiero saber si la persona que esté vendiendo aun tiene productos para vender.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
@@ -42,7 +42,7 @@ Historias de Usuario:
 | 1.2 |  | 0 |  | 1 | no comenzado |
 | 1.3 |  | 0 |  | 1 | no comenzado |
 
-[HDU5] Como usuario quiero subir mi propio anuncio y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce casero, etc.
+[HDU5] Como usuario quiero subir mi propio anuncio y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce cacero, etc.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
@@ -50,7 +50,7 @@ Historias de Usuario:
 | 1.2 |  | 0 |  | 1 | no comenzado |
 | 1.3 |  | 0 |  | 1 | no comenzado |
 
-[HDU6] Como administrador quiero acceder a un log de eventos para saber como se usa la aplicacion 
+[HDU6] Como administrador quiero acceder a un log de eventos para saber como se usa la aplicacion.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
