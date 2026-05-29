@@ -42,7 +42,7 @@ Historias de Usuario:
 | 1.2 |  | 0 |  | 1 | no comenzado |
 | 1.3 |  | 0 |  | 1 | no comenzado |
 
-[HDU5] Como usuario quiero subir mi propio anuncio y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce cacero, etc.
+[HDU5] Como usuario quiero subir mi propio anuncio y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce casero, etc.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
