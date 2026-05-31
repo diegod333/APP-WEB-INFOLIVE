@@ -15,8 +15,6 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdqF6zqNAsl5uQKhl5OpCAl8TAHuWYIk2V02WgPmQc5B1FAuJd5CmvyCKWQZHvcpaXBw/exec";
-
 export default function PublicarPage() {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -35,7 +33,22 @@ export default function PublicarPage() {
     }
   };
 
+  const limpiarFormulario = () => {
+    setTitulo("");
+    setDescripcion("");
+    setPrecio("");
+    setUbicacion("");
+    setHorario("");
+    setStock("");
+    setDias([]);
+  };
+
   const guardarAnuncio = async () => {
+    if (!titulo || !descripcion || !ubicacion || !horario || !stock) {
+      alert("Completa los campos principales antes de publicar.");
+      return;
+    }
+
     setCargando(true);
 
     const anuncio = {
@@ -48,13 +61,29 @@ export default function PublicarPage() {
       stock,
     };
 
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify(anuncio),
-    });
+    try {
+      const res = await fetch("/api/anuncios", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(anuncio),
+      });
 
-    setCargando(false);
-    alert("Anuncio publicado correctamente");
+      const data = await res.json();
+
+      if (data.ok) {
+        alert("Anuncio publicado correctamente");
+        limpiarFormulario();
+      } else {
+        alert("Error al publicar el anuncio");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error de conexión al publicar el anuncio");
+    } finally {
+      setCargando(false);
+    }
   };
 
   return (
