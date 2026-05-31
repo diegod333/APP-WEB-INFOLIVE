@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "InfoLive",
-  description: "Tablón de anuncios para informática",
+  description: "¡Comida para Informática!",
 };
 
 export default function RootLayout({ children }) {
