@@ -10,9 +10,13 @@ import {
   Input,
   InputGroup,
   SimpleGrid,
-  useDisclosure,
   Container,
   Divider,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 
 import TarjetaAnuncios from "@/components/tarjeta_anuncios";
@@ -20,7 +24,6 @@ import { anuncios, categorias } from "@/data/anuncios";
 import Link from "next/link";
 
 export default function Home() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [activeCategory, setActiveCategory] = useState("inicio");
   const [search, setSearch] = useState("");
 
@@ -43,7 +46,7 @@ export default function Home() {
     }))
     .filter((g) => g.items.length > 0);
 
-  const isInicio = activeCategory === "inicio";
+  const isInicio = activeCategory === "inicio" && search === "";
 
   return (
     <Box minH="100vh" bg="#f8f9fc">
@@ -57,8 +60,13 @@ export default function Home() {
       >
         <Container maxW="720px">
           <HStack h="56px" spacing={3}>
-
-            <HStack spacing={2} flex="1">
+            
+            <HStack 
+              spacing={2} 
+              flex="1" 
+              cursor="pointer" 
+              onClick={() => setActiveCategory("inicio")}
+            >
               <Box
                 w="28px"
                 h="28px"
@@ -83,19 +91,19 @@ export default function Home() {
               </VStack>
             </HStack>
 
-             <Link href="/publicar">
-                <Button
-                  size="sm"
-                  bg="#4f46e5"
-                  color="white"
-                  borderRadius="99px"
-                  px={4}
-                  fontSize="12px"
-                  fontWeight="600"
-                  _hover={{ bg: "#4338ca" }}
-                >
-                  Publicar
-                </Button>
+            <Link href="/publicar">
+              <Button
+                size="sm"
+                bg="#4f46e5"
+                color="white"
+                borderRadius="99px"
+                px={4}
+                fontSize="12px"
+                fontWeight="600"
+                _hover={{ bg: "#4338ca" }}
+              >
+                Publicar
+              </Button>
             </Link>   
 
             <InputGroup maxW="180px" size="sm">         
@@ -112,23 +120,63 @@ export default function Home() {
               />
             </InputGroup>
 
-            <Box
-              w="32px"
-              h="32px"
-              borderRadius="full"
-              bg="#4f46e5"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              cursor="pointer"
-            >
-              <Text color="white" fontWeight="700" fontSize="12px">
-                JR
-              </Text>
-            </Box>
+            {/* --- NUEVO MENÚ DE PERFIL AQUI --- */}
+            <Menu placement="bottom-end">
+              <MenuButton 
+                as={Box} 
+                w="32px"
+                h="32px"
+                borderRadius="full"
+                bg="#4f46e5"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                cursor="pointer"
+                _hover={{ bg: "#4338ca" }}
+                transition="all 0.2s"
+              >
+                <Text color="white" fontWeight="700" fontSize="12px" textAlign="center" lineHeight="32px">
+                  JR
+                </Text>
+              </MenuButton>
+              
+              <MenuList 
+                minW="200px" 
+                borderRadius="12px" 
+                shadow="md" 
+                border="1px solid" 
+                borderColor="gray.100" 
+                p={1}
+              >
+                <MenuItem 
+                  fontSize="13px" 
+                  fontWeight="500" 
+                  color="gray.700" 
+                  borderRadius="8px"
+                  _hover={{ bg: "gray.50", color: "#4f46e5" }}
+                >
+                  Anuncios guardados
+                </MenuItem>
+                
+                <MenuDivider borderColor="gray.100" my={1} />
+                
+                <MenuItem 
+                  fontSize="13px" 
+                  fontWeight="500" 
+                  color="red.600" 
+                  borderRadius="8px"
+                  _hover={{ bg: "red.50" }}
+                >
+                  Cerrar sesión
+                </MenuItem>
+              </MenuList>
+            </Menu>
+            {/* --------------------------------- */}
+
           </HStack>
         </Container>
       </Box>
+
       <Container maxW="720px" py={6} px={4}>
         {isInicio ? (
           <VStack align="stretch" spacing={6}>
@@ -164,18 +212,31 @@ export default function Home() {
         ) : (
           <VStack align="stretch" spacing={4}>
             <HStack justify="space-between">
-              <Text fontWeight="700" fontSize="18px" color="gray.900">
-                {categorias.find((c) => c.id === activeCategory)?.label ?? "Anuncios"}
-              </Text>
+              <HStack>
+                <Text fontWeight="700" fontSize="18px" color="gray.900">
+                  {search !== "" 
+                    ? `Resultados de búsqueda: "${search}"` 
+                    : categorias.find((c) => c.id === activeCategory)?.label ?? "Anuncios"}
+                </Text>
+              </HStack>
 
               <Text fontSize="12px" color="gray.400">
-                {filtered.length} anuncios
+                {filtered.length} {filtered.length === 1 ? "anuncio" : "anuncios"}
               </Text>
             </HStack>
 
             {filtered.length === 0 ? (
               <Box textAlign="center" py={16} color="gray.400">
                 <Text fontSize="14px">No hay anuncios aquí todavía.</Text>
+                {search && (
+                  <Button 
+                    mt={4} 
+                    size="sm" 
+                    onClick={() => setSearch("")}
+                  >
+                    Borrar búsqueda
+                  </Button>
+                )}
               </Box>
             ) : (
               <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={3}>
