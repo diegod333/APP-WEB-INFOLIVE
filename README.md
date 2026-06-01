@@ -24,7 +24,7 @@ Historias de Usuario:
 | 2.2 | Agregar campo ubicación dentro del campus | 1 | Diego | 2 | terminado |
 | 2.3 | Mostrar ubicación en la tarjeta del anuncio | 1 | Diego | 1 | terminado |
 
-[HDU3] Como usuario quiero tener la capacidad de guardar anucios de mi interes para que no desaparesca con el tiempo y olvide la informacion.
+[HDU3] Como usuario quiero tener la capacidad de guardar anuncios de mi interes para que no desaparezca con el tiempo y olvide la informacion.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
