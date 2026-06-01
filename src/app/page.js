@@ -28,15 +28,22 @@ export default function Home() {
   const [search, setSearch] = useState("");
 
   const filtered = anuncios.filter((a) => {
+    // 1. REGLA ESTRICTA: El anuncio debe ser de la categoría comidas
+    // (Puse "comidas" o "comida" por si tienes el ID en singular o plural en tu base de datos)
+    const esComida = a.categoria === "comidas" || a.categoria === "comida";
+
+    // 2. Comprobación de vista actual
     const matchCat =
       activeCategory === "inicio" || a.categoria === activeCategory;
 
+    // 3. Comprobación de búsqueda
     const matchSearch =
       search === "" ||
       a.titulo.toLowerCase().includes(search.toLowerCase()) ||
       a.descripcion.toLowerCase().includes(search.toLowerCase());
 
-    return matchCat && matchSearch;
+    // Solo retorna true si cumple las 3 condiciones
+    return esComida && matchCat && matchSearch;
   });
 
   const agrupados = categorias
@@ -44,6 +51,7 @@ export default function Home() {
       ...cat,
       items: filtered.filter((a) => a.categoria === cat.id),
     }))
+    // Como filtramos solo comidas arriba, las demás categorías quedarán vacías y se ocultarán aquí
     .filter((g) => g.items.length > 0);
 
   const isInicio = activeCategory === "inicio" && search === "";
@@ -120,7 +128,7 @@ export default function Home() {
               />
             </InputGroup>
 
-            {/* --- NUEVO MENÚ DE PERFIL AQUI --- */}
+            {/* MENÚ DE PERFIL */}
             <Menu placement="bottom-end">
               <MenuButton 
                 as={Box} 
@@ -171,7 +179,6 @@ export default function Home() {
                 </MenuItem>
               </MenuList>
             </Menu>
-            {/* --------------------------------- */}
 
           </HStack>
         </Container>
@@ -182,7 +189,7 @@ export default function Home() {
           <VStack align="stretch" spacing={6}>
             {agrupados.length === 0 ? (
               <Box textAlign="center" py={16} color="gray.400">
-                <Text fontSize="14px">No se encontraron anuncios.</Text>
+                <Text fontSize="14px">No se encontraron anuncios de comidas.</Text>
               </Box>
             ) : (
               agrupados.map((grupo) => (
