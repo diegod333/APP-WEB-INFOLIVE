@@ -15,7 +15,7 @@ Historias de Usuario:
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
 | 1.0 | Agregar interfaz para acceder a la edicion de anuncios (Mis anuncios) |  | Agustin | 2 | No comenzado|
-| 1.1 | Agregar pagina de edicion de anuncio | 2 | Diego | 2 | No comenzado|
+| 1.1 | Agregar pagina de edicion de anuncio | 2 | Diego | 2 | No comenzado |
 | 1.2 | Agregar el poder marcar disponible/agotado y dejar funcional | 1 | Diego | 2 | No comenzado|
 | 1.3 | Agregar el poder eliminar anuncios y dejar funcional | 1 | Diego | 2 | No comenzado|
 
@@ -34,17 +34,15 @@ Historias de Usuario:
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
-| 3.1 | Diseñar funcionalidad de anuncios favoritos | 3 |  | 1 | no comenzado |
-| 3.2 | Implementar almacenamiento de anuncios guardados por usuario | 6 |  | 1 | no comenzado |
-| 3.3 | Crear vista para consultar anuncios guardados | 4 |  | 1 | no comenzado |
+| 3.1 | Crear vista para consultar anuncios guardados | 2 | Javier | 2 | terminado |
+| 3.2 | Agregar interfaz para acceder a anuncios guardados (Anuncios guardados) | 2 | Javier | 2 | terminado |
+| 3.3 | Diseñar funcionalidad de anuncios favoritos con respectivos botones | 2 |  | 1 | no comenzado |
 
 [HDU4] Como usuario quiero saber si la persona que esté vendiendo aun tiene productos para vender.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
 | 4.1 | Agregar estado de disponibilidad a los anuncios | 1 | Diego | 2 | terminado |
-| 4.2 | Permitir al vendedor actualizar disponibilidad de productos | 1 |  | 2 | no comenzado |
-| 4.3 | Mostrar visualmente si el producto sigue disponible o está agotado | 1 |  | 2 | no comenzado |
 
 [HDU5] Como usuario quiero subir mi propio anuncio y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce casero, etc.
 
