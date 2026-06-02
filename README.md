@@ -14,7 +14,9 @@ Historias de Usuario:
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
-| 1.0 | Agregar el poder marcar disponible/agotado y dejar funcional | 3 | Diego | 2 | No comenzado|
+| 1.0 | Agregar pagina  de edicion de anuncio | 2 | Diego | 2 | No comenzado|
+| 1.1 | Agregar el poder marcar disponible/agotado y dejar funcional | 1 | Diego | 2 | No comenzado|
+| 1.2 | Agregar el poder eliminar anuncios y dejar funcional | 1 | Diego | 2 | No comenzado|
 
 [HDU2] Como usuario me gustaria ver el nombre o alguna imagen de ser posible de la persona que este vendiendo ademas de algo que me indique en que parte del campus esta la persona que se encuantra vediendo bebidas, algun dulce, etc para no estar buscando a ciegas a aquella pesona.
 
