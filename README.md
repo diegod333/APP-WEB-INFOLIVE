@@ -14,17 +14,21 @@ Historias de Usuario:
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
-| 1.0 | Agregar pagina  de edicion de anuncio | 2 | Diego | 2 | No comenzado|
-| 1.1 | Agregar el poder marcar disponible/agotado y dejar funcional | 1 | Diego | 2 | No comenzado|
-| 1.2 | Agregar el poder eliminar anuncios y dejar funcional | 1 | Diego | 2 | No comenzado|
+| 1.0 | Agregar interfaz para acceder a la edicion de anuncios (Mis anuncios) |  | Agustin | 2 | No comenzado|
+| 1.1 | Agregar pagina de edicion de anuncio | 2 | Diego | 2 | No comenzado|
+| 1.2 | Agregar el poder marcar disponible/agotado y dejar funcional | 1 | Diego | 2 | No comenzado|
+| 1.3 | Agregar el poder eliminar anuncios y dejar funcional | 1 | Diego | 2 | No comenzado|
 
 [HDU2] Como usuario me gustaria ver el nombre o alguna imagen de ser posible de la persona que este vendiendo ademas de algo que me indique en que parte del campus esta la persona que se encuantra vediendo bebidas, algun dulce, etc para no estar buscando a ciegas a aquella pesona.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
-| 2.1 | Agregar campo nombre del vendedor en los anuncios | 1 | Diego | 1 | terminado |
+| 2.1 | Agregar campo nombre del vendedor en los anuncios | 1 | Diego | 1 | terminado|
 | 2.2 | Agregar campo ubicación dentro del campus | 1 | Diego | 2 | terminado |
-| 2.3 | Mostrar ubicación en la tarjeta del anuncio | 1 | Diego | 1 | terminado |
+| 2.3 | Mostrar ubicación en la tarjeta del anuncio | 1 |  | 2 | no comenzado |
+| 2.4 | Añadir al inicio de sesion nombre que se pondrá el anunciante | 1 |  | 2 | no comenzado |
+| 2.5 | Agregar nombre del anunciante al spreadsheet | 15 min |  | 2 | no comenzado |
+| 2.6 | Hacer llamado del nombre hacia la tarjeta del anunciante | 1 |  | 2 | no comenzado |
 
 [HDU3] Como usuario quiero tener la capacidad de guardar anuncios de mi interes para que no desaparezca con el tiempo y olvide la informacion.
 
