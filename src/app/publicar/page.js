@@ -59,6 +59,7 @@ export default function PublicarPage() {
       dias: dias.join(", "),
       horario,
       stock,
+      dueno_anuncio:"correoprueba@uach.cl",
     };
 
     try {

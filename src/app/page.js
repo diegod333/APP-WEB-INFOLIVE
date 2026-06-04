@@ -137,8 +137,8 @@ export default function Home() {
                 _hover={{ bg: "#4338ca" }}
                 transition="all 0.2s"
               >
-                <Text color="white" fontWeight="700" fontSize="12px" textAlign="center" lineHeight="32px">
-                  JR
+                <Text color="white" fontSize="9px" textAlign="center" lineHeight="10px">
+                  Mi perfil
                 </Text>
               </MenuButton>
               <MenuList 
@@ -148,6 +148,19 @@ export default function Home() {
               border="1px solid" 
               borderColor="gray.100" 
               p={1}>
+                <MenuItem
+                as={Link}
+                href="/mis-anuncios"
+                fontSize="13px" 
+                fontWeight="500" 
+                color="gray.700" 
+                borderRadius="8px"
+                _hover={{ bg: "gray.50", color: "#4f46e5" }}
+                > 
+                  Mis anuncios
+                  </MenuItem>
+                  <MenuDivider borderColor="gray.100" my={1} />
+            
                 <MenuItem 
                 as={Link}
                 href="/anuncios-fav"
@@ -177,7 +190,7 @@ export default function Home() {
                     _hover={{ bg: "red.50" }}>
 
                     Cerrar sesión
-                    </MenuItem>
+                    </MenuItem>    
                     </MenuList>
             </Menu>
 
