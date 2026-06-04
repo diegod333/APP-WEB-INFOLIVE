@@ -180,15 +180,6 @@ export default function Home() {
                   borderRadius="8px"
                   _hover={{ bg: "red.50" }}
                   >
-                    Mis anuncios
-                    </MenuItem>
-                    <MenuDivider borderColor="gray.100" my={1} />
-                    <MenuItem fontSize="13px"
-                    fontWeight="500"
-                    color="red.600"
-                    borderRadius="8px"
-                    _hover={{ bg: "red.50" }}>
-
                     Cerrar sesión
                     </MenuItem>    
                     </MenuList>
