@@ -36,7 +36,7 @@ Historias de Usuario:
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
 | 3.1 | Crear vista para consultar anuncios guardados | 2 | Javier | 2 | terminado |
 | 3.2 | Agregar interfaz para acceder a anuncios guardados (Anuncios guardados) | 2 | Javier | 2 | terminado |
-| 3.3 | Diseñar funcionalidad de anuncios favoritos con respectivos botones | 2 |  | 1 | no comenzado |
+| 3.3 | Diseñar funcionalidad de anuncios favoritos con respectivos botones | 2 | Sebastian | 1 | no comenzado |
 
 [HDU4] Como usuario quiero saber si la persona que esté vendiendo aun tiene productos para vender.
 
