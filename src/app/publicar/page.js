@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Container,
+  HStack,
   VStack,
   Text,
   Input,
   Button,
   Textarea,
   Select,
-  Checkbox,
-  SimpleGrid,
 } from "@chakra-ui/react";
 import Link from "next/link";
 
@@ -20,31 +19,35 @@ export default function PublicarPage() {
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState("");
   const [ubicacion, setUbicacion] = useState("");
-  const [horario, setHorario] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFin, setHoraFin] = useState("");
   const [stock, setStock] = useState("");
-  const [dias, setDias] = useState([]);
   const [cargando, setCargando] = useState(false);
 
-  const toggleDia = (dia) => {
-    if (dias.includes(dia)) {
-      setDias(dias.filter((d) => d !== dia));
-    } else {
-      setDias([...dias, dia]);
-    }
-  };
+  useEffect(() => {
+    const ahora = new Date();
+
+    const hora = ahora.toLocaleTimeString("es-CL", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    setHoraInicio(hora);
+  }, []);
+
 
   const limpiarFormulario = () => {
     setTitulo("");
     setDescripcion("");
     setPrecio("");
     setUbicacion("");
-    setHorario("");
+    setHoraFin("");
     setStock("");
-    setDias([]);
   };
 
   const guardarAnuncio = async () => {
-    if (!titulo || !descripcion || !ubicacion || !horario || !stock) {
+    if (!titulo || !descripcion || !ubicacion || !horaInicio || !horaFin || !stock) {
       alert("Completa los campos principales antes de publicar.");
       return;
     }
@@ -56,8 +59,7 @@ export default function PublicarPage() {
       descripcion,
       precio,
       ubicacion,
-      dias: dias.join(", "),
-      horario,
+      horario: `${horaInicio} - ${horaFin}`,
       stock,
       dueno_anuncio:"correoprueba@uach.cl",
     };
@@ -140,31 +142,32 @@ export default function PublicarPage() {
           </Select>
 
           <Box bg="white" p={4} borderRadius="12px" border="1px solid #e5e7eb">
-            <Text fontSize="14px" fontWeight="700" mb={3} color="gray.800">
-              Días disponibles
-            </Text>
+            <VStack align="stretch" spacing={3}>
+              <Text fontSize="14px" fontWeight="700" color="gray.800">
+                Horario disponible
+              </Text>
+              
+              <HStack>
+                <Input
+                  placeholder="Hora inicio"
+                  bg="white"
+                  value={horaInicio}
+                  readOnly
+                />
 
-            <SimpleGrid columns={2} spacing={2}>
-              {["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"].map(
-                (dia) => (
-                  <Checkbox
-                    key={dia}
-                    isChecked={dias.includes(dia)}
-                    onChange={() => toggleDia(dia)}
-                  >
-                    {dia}
-                  </Checkbox>
-                )
-              )}
-            </SimpleGrid>
+                <Input
+                  type="time"
+                  bg="white"
+                  value={horaFin}
+                  onChange={(e) => setHoraFin(e.target.value)}
+                />
+              </HStack>
+
+              <Text fontSize="12px" color="gray.400">
+                Ejemplo: disponible desde ahora hasta las 13:30.
+              </Text>
+            </VStack>
           </Box>
-
-          <Input
-            placeholder="Horario. Ej: 12:00 - 15:30"
-            bg="white"
-            value={horario}
-            onChange={(e) => setHorario(e.target.value)}
-          />
 
           <Select
             placeholder="Stock"

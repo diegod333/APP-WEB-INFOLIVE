@@ -69,11 +69,10 @@ export async function GET() {
       descripcion: row[2] || "",
       precio: row[3] || "",
       ubicacion: row[4] || "",
-      dias: row[5] || "",
-      horario: row[6] || "",
-      stock: row[7] || "",
-      dueno_anuncio: row[8] || "",
-      createdAt: row[9] || "",
+      horario: row[5] || "",
+      stock: row[6] || "",
+      dueno_anuncio: row[7] || "",
+      createdAt: row[8] || "",
     }));
 
     return Response.json({ ok: true, anuncios });
@@ -104,7 +103,6 @@ export async function POST(request) {
             body.descripcion,
             body.precio,
             body.ubicacion,
-            body.dias,
             body.horario,
             body.stock,
             body.dueno_anuncio,
@@ -145,7 +143,6 @@ export async function PUT(request) {
             body.descripcion,
             body.precio,
             body.ubicacion,
-            body.dias,
             body.horario,
             body.stock,
             body.dueno_anuncio,
