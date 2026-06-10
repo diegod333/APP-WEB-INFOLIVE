@@ -26,7 +26,7 @@ Historias de Usuario:
 | 2.1 | Agregar campo nombre del vendedor en los anuncios | 1 | Diego | 1 | terminado|
 | 2.2 | Agregar campo ubicación dentro del campus | 1 | Diego | 2 | terminado |
 | 2.3 | Mostrar ubicación en la tarjeta del anuncio | 1 |  | 2 | no comenzado |
-| 2.4 | Añadir al inicio de sesion nombre que se pondrá el anunciante | 1 |  | 2 | no comenzado |
+| 2.4 | Añadir al inicio de sesion nombre que se pondrá el anunciante | 1 | Sebastian | 2 | no comenzado |
 | 2.5 | Agregar nombre del anunciante al spreadsheet | 15 min |  | 2 | no comenzado |
 | 2.6 | Hacer llamado del nombre hacia la tarjeta del anunciante | 1 |  | 2 | no comenzado |
 
