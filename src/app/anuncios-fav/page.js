@@ -83,6 +83,19 @@ export default function Guardados() {
                   p={1}
                   >
                     <MenuItem
+                        as={Link}
+                        href="/login"
+                        fontSize="13px"
+                        fontWeight="500"
+                        color="blue.600"
+                        borderRadius="8px"
+                        _hover={{  bg: "gray.50", color: "#4f46e5"  }}
+                        >
+                          Iniciar sesión
+                          </MenuItem>
+                          <MenuDivider borderColor="gray.100" my={1} />
+
+                    <MenuItem
                     as={Link}
                     href="/mis-anuncios"
                     fontSize="13px"
@@ -105,16 +118,7 @@ export default function Guardados() {
                        >
                         Anuncios guardados
                         </MenuItem>
-                        <MenuDivider borderColor="gray.100" my={1} />
-                        <MenuItem
-                        fontSize="13px"
-                        fontWeight="500"
-                        color="red.600"
-                        borderRadius="8px"
-                        _hover={{ bg: "red.50" }}
-                        >
-                          Cerrar sesión
-                          </MenuItem>
+                        
                           </MenuList>
                           </Menu>
                           </HStack>
