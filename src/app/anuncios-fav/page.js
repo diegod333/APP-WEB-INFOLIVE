@@ -7,7 +7,11 @@ import {
   VStack,
   Text,
   Button,
-  Icon,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 import Link from "next/link";
 
@@ -52,7 +56,9 @@ export default function Guardados() {
               </HStack>
             </Link>
 
-            <Box
+            <Menu placement="bottom-end">
+              <MenuButton
+              as={Box}
               w="32px"
               h="32px"
               borderRadius="full"
@@ -60,16 +66,61 @@ export default function Guardados() {
               display="flex"
               alignItems="center"
               justifyContent="center"
-            >
-              <Text color="white" fontWeight="700" fontSize="12px">
-                JR
-              </Text>
-            </Box>
-          </HStack>
-        </Container>
-      </Box>
-
-      {}
+              cursor="pointer"
+              hover={{ bg: "#4338ca" }}
+              transition="all 0.2s"
+              >
+                <Text color="white" fontSize="9px" textAlign="center" lineHeight="10px">
+                  Mi perfil
+                  </Text>
+                  </MenuButton>
+                  <MenuList
+                  minW="200px"
+                  borderRadius="12px"
+                  shadow="md"
+                  border="1px solid"
+                  borderColor="gray.100"
+                  p={1}
+                  >
+                    <MenuItem
+                    as={Link}
+                    href="/mis-anuncios"
+                    fontSize="13px"
+                    fontWeight="500"
+                    color="gray.700"
+                    borderRadius="8px"
+                     _hover={{ bg: "gray.50", color: "#4f46e5" }}
+                     >
+                      Mis anuncios
+                      </MenuItem>
+                       <MenuDivider borderColor="gray.100" my={1} />
+                       <MenuItem
+                       as={Link}
+                       href="/anuncios-fav"
+                       fontSize="13px"
+                       fontWeight="500"
+                       color="gray.700"
+                       borderRadius="8px"
+                       hover={{ bg: "gray.50", color: "#4f46e5" }}
+                       >
+                        Anuncios guardados
+                        </MenuItem>
+                        <MenuDivider borderColor="gray.100" my={1} />
+                        <MenuItem
+                        fontSize="13px"
+                        fontWeight="500"
+                        color="red.600"
+                        borderRadius="8px"
+                        _hover={{ bg: "red.50" }}
+                        >
+                          Cerrar sesión
+                          </MenuItem>
+                          </MenuList>
+                          </Menu>
+                          </HStack>
+                          </Container>
+                          </Box>
+                          {}
       <Container maxW="720px" py={12} px={4}>
         <VStack spacing={6} align="center" mt={10}>
           <Box
