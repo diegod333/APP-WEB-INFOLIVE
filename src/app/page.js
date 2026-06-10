@@ -197,28 +197,22 @@ export default function Home() {
                 <Text fontSize="14px">No se encontraron anuncios de comidas.</Text>
               </Box>
             ) : (
-              agrupados.map((grupo) => (
-                <Box key={grupo.id}>
-                  <HStack justify="space-between" mb={3}>
-                    <Text fontWeight="700" fontSize="14px" color="gray.800">
-                      {grupo.label}
-                    </Text>
-
-                    <Button
-                      size="xs"
-                      variant="ghost"
-                      color="gray.400"
-                      onClick={() => setActiveCategory(grupo.id)}
-                      _hover={{ color: "#4f46e5" }}
-                    >
-                      Ver todos
-                    </Button>
-                  </HStack>
-
-                  <TarjetaAnuncios anuncio={grupo.items[0]} />
-                  <Divider mt={4} />
+              filtered.length === 0 ? (
+                <Box textAlign="center" py={16} color="gray.400">
+                  <Text fontSize="14px">
+                    No se encontraron anuncios de comida.
+                  </Text>
                 </Box>
-              ))
+              ) : (
+                <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={3}>
+                  {filtered.map((anuncio) => (
+                    <TarjetaAnuncios
+                      key={anuncio.id}
+                      anuncio={anuncio}
+                    />
+                  ))}
+                </SimpleGrid>
+              )
             )}
           </VStack>
         ) : (
