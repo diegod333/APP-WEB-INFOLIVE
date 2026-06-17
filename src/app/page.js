@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import {
   Box,
   HStack,
@@ -20,13 +20,31 @@ import {
 } from "@chakra-ui/react";
 
 import TarjetaAnuncios from "@/components/tarjeta_anuncios";
-import { anuncios, categorias } from "@/data/anuncios";
+import { categorias } from "@/data/anuncios";
 import Link from "next/link";
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("inicio");
   const [search, setSearch] = useState("");
+  const [anuncios, setAnuncios] = useState([]);   //cambio
 
+  const cargarAnuncios = async () => {
+    try {
+      const res = await fetch("/api/anuncios");
+      const data = await res.json();
+
+      if (data.ok) {
+        setAnuncios(data.anuncios);
+      }
+    } catch (error) {
+      console.error("Error cargando anuncios:", error);
+    }
+  };
+  
+  useEffect(() => {
+    cargarAnuncios();
+  }, []);
+  
   const filtered = anuncios.filter((a) => {
     const esComida = a.categoria === "comidas" || a.categoria === "comida";
 
