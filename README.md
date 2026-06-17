@@ -14,7 +14,7 @@ Historias de Usuario:
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
-| 1.0 | Agregar interfaz para acceder a la edicion de anuncios (Mis anuncios) |  | Agustin | 2 | En proceso|
+| 1.0 | Agregar interfaz para acceder a la edicion de anuncios (Mis anuncios) | 1 | Agustin | 2 | Terminado |
 | 1.1 | Agregar pagina de edicion de anuncio | 2 | Diego | 2 | No comenzado |
 | 1.2 | Agregar el poder marcar disponible/agotado y dejar funcional | 1 | Diego | 2 | No comenzado|
 | 1.3 | Agregar el poder eliminar anuncios y dejar funcional | 1 | Diego | 2 | No comenzado|
