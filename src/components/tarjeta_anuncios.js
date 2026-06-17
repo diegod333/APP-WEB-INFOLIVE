@@ -33,9 +33,17 @@ export default function TarjetaAnuncios({ anuncio }) {
         </Text>
 
         <VStack align="start" spacing={0.5} pt={1}>
-          <Text fontSize="11px" color="gray.400">{anuncio.hora}</Text>
-          <Text fontSize="11px" color="gray.400">{anuncio.lugar}</Text>
-          <Text fontSize="11px" color="gray.400">{anuncio.autor}</Text>
+          <Text fontSize="11px" color="gray.400">
+            {anuncio.horario}
+          </Text>
+
+          <Text fontSize="11px" color="gray.400">
+            {anuncio.ubicacion}
+          </Text>
+
+          <Text fontSize="11px" color="gray.400">
+            {anuncio.dueno_anuncio}
+          </Text>
         </VStack>
       </VStack>
     </Box>
