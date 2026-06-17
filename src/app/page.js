@@ -26,7 +26,7 @@ import Link from "next/link";
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("inicio");
   const [search, setSearch] = useState("");
-  const [anuncios, setAnuncios] = useState([]);   //cambio
+  const [anuncios, setAnuncios] = useState([]);   
 
   const cargarAnuncios = async () => {
     try {
