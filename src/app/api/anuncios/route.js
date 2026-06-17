@@ -65,6 +65,7 @@ export async function GET() {
     const anuncios = dataRows.map((row, index) => ({
       rowNumber: index + 2,
       id: row[0] || "",
+      categoria: "comida",
       titulo: row[1] || "",
       descripcion: row[2] || "",
       precio: row[3] || "",
