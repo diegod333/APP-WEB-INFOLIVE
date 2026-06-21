@@ -36,6 +36,13 @@ export default function PublicarPage() {
     setHoraInicio(hora);
   }, []);
 
+    // Redirigir si no hay sesión
+  useEffect(() => {
+    if (!cargandoSesion && !usuario) {
+      router.push("/login");
+    }
+  }, [usuario, cargandoSesion, router]);
+
 
   const limpiarFormulario = () => {
     setTitulo("");
@@ -61,7 +68,7 @@ export default function PublicarPage() {
       ubicacion,
       horario: `${horaInicio} - ${horaFin}`,
       stock,
-      dueno_anuncio:"correoprueba@uach.cl",
+      dueno_anuncio: usuario.nombre,
     };
 
     try {
@@ -88,6 +95,14 @@ export default function PublicarPage() {
       setCargando(false);
     }
   };
+
+  if (cargandoSesion || !usuario) {
+    return (
+      <Box minH="100vh" bg="#f8f9fc" display="flex" alignItems="center" justifyContent="center">
+        <Text color="gray.400">Cargando...</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box minH="100vh" bg="#f8f9fc">

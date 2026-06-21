@@ -34,15 +34,15 @@ export default function TarjetaAnuncios({ anuncio }) {
 
         <VStack align="start" spacing={0.5} pt={1}>
           <Text fontSize="11px" color="gray.400">
-            {anuncio.horario}
+            Horario: {anuncio.horario}
           </Text>
 
           <Text fontSize="11px" color="gray.400">
-            {anuncio.ubicacion}
+            Ubicación: Edificio {anuncio.ubicacion}
           </Text>
 
           <Text fontSize="11px" color="gray.400">
-            {anuncio.dueno_anuncio}
+            Vendedor: {anuncio.dueno_anuncio}
           </Text>
         </VStack>
       </VStack>
