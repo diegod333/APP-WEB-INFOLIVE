@@ -13,6 +13,8 @@ import {
   Select,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSesion } from "@/context/SessionContext";
 
 export default function PublicarPage() {
   const [titulo, setTitulo] = useState("");
@@ -23,6 +25,8 @@ export default function PublicarPage() {
   const [horaFin, setHoraFin] = useState("");
   const [stock, setStock] = useState("");
   const [cargando, setCargando] = useState(false);
+  const { usuario, cargandoSesion } = useSesion();
+  const router = useRouter();
 
   useEffect(() => {
     const ahora = new Date();
