@@ -135,9 +135,18 @@ export default function MisAnunciosPage() {
                   <Input value={anuncio.titulo} onChange={(e) => cambiarCampo(index, "titulo", e.target.value)} />
                   <Textarea value={anuncio.descripcion} onChange={(e) => cambiarCampo(index, "descripcion", e.target.value)} />
                   <Input value={anuncio.precio} onChange={(e) => cambiarCampo(index, "precio", e.target.value)} />
-                  <Input value={anuncio.ubicacion} onChange={(e) => cambiarCampo(index, "ubicacion", e.target.value)} />
+                  <Select value={anuncio.ubicacion} onChange={(e) => cambiarCampo(index, "ubicacion", e.target.value)}>
+                    <option value="2000">Edificio 2000</option>
+                    <option value="3000">Edificio 3000</option>
+                    <option value="4000">Edificio 4000</option>
+                    <option value="6000">Edificio 6000</option>
+                    <option value="7000">Edificio 7000</option>
+                    <option value="8000">Edificio 8000</option>
+                    <option value="9000">Edificio 9000</option>
+                    <option value="10000">Edificio 10000</option>
+                    <option value="14000">Edificio 14000</option>
+                  </Select> 
                   <Input value={anuncio.horario} onChange={(e) => cambiarCampo(index, "horario", e.target.value)} />
-
                   <Select value={anuncio.stock} onChange={(e) => cambiarCampo(index, "stock", e.target.value)}>
                     <option value="disponible">Disponible</option>
                     <option value="agotado">Agotado</option>
