@@ -52,6 +52,7 @@ Historias de Usuario:
 | 5.2 | Crear campos para título y descripción | 1 | Diego | 2 | terminado |
 | 5.3 | Permitir ingresar ubicación del vendedor | 1 | Diego | 2 | terminado |
 | 5.4 | Implementar publicación de anuncios | 1 | Diego | 2 | terminado |
+| 5.5 | Implementar codigos de cuentas y poder publicar/editar anuncios mediante el login con codigo| 4 | Diego | 2 | No comenzado|
 
 [HDU6] Como administrador quiero acceder a un log de eventos para saber como se usa la aplicacion.
 
