@@ -32,7 +32,7 @@ export default function Home() {
     cargarAnuncios();
   }, []);
 
-  const filtered = anuncios.filter((a) => {
+  const anunciosFiltrados = anuncios.filter((a) => {
     const esComida = a.categoria === "comidas" || a.categoria === "comida";
     const matchCat = activeCategory === "inicio" || a.categoria === activeCategory;
     const matchSearch =
@@ -43,7 +43,7 @@ export default function Home() {
   });
 
   const agrupados = categorias
-    .map((cat) => ({ ...cat, items: filtered.filter((a) => a.categoria === cat.id) }))
+    .map((cat) => ({ ...cat, items: anunciosFiltrados.filter((a) => a.categoria === cat.id) }))
     .filter((g) => g.items.length > 0);
 
   const isInicio = activeCategory === "inicio" && search === "";
@@ -143,20 +143,24 @@ export default function Home() {
       </Box>
 
       <Container maxW="720px" py={6} px={4}>
-        {isInicio ? (
-          <VStack align="stretch" spacing={6}>
-            {filtered.length === 0 ? (
-              <Box textAlign="center" py={16} color="gray.400">
-                <Text fontSize="14px">No se encontraron anuncios de comidas.</Text>
-              </Box>
-            ) : (
-              <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={3}>
-                {filtered.map((anuncio) => (
-                  <TarjetaAnuncios key={anuncio.id} anuncio={anuncio} />
-                ))}
-              </SimpleGrid>
-            )}
-          </VStack>
+  {isInicio ? (
+    <VStack align="stretch" spacing={6}>
+      
+      
+      {anunciosFiltrados.length === 0 ? (
+        <Box textAlign="center" py={16} color="gray.400">
+          <Text fontSize="14px">No se encontraron anuncios de comida.</Text>
+        </Box>
+      ) : (
+        
+        <VStack spacing={4} w="full" maxW="800px" mx="auto">
+          {anunciosFiltrados.map((anuncio) => (
+            <TarjetaAnuncios key={anuncio.id} anuncio={anuncio} />
+          ))}
+        </VStack>
+      )} 
+
+    </VStack>
         ) : (
           <VStack align="stretch" spacing={4}>
             <HStack justify="space-between">
