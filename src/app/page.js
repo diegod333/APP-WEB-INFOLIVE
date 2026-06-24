@@ -41,7 +41,55 @@ export default function Home() {
       a.descripcion.toLowerCase().includes(search.toLowerCase());
     return esComida && matchCat && matchSearch;
   });
-
+  
+  const anunciosOrdenados = [...anunciosFiltrados].sort((a, b) => {
+    const ahora = new Date();
+    const minutosActuales = ahora.getHours() * 60 + ahora.getMinutes();
+    
+    const obtenerHorario = (horario) => {
+      const [inicio, fin] = horario.split(" - ");
+      const [hInicio, mInicio] = inicio.split(":").map(Number);
+      const [hFin, mFin] = fin.split(":").map(Number);
+  
+      return {
+        inicio: hInicio * 60 + mInicio,
+        fin: hFin * 60 + mFin,
+      };
+    };
+    
+    const horarioA = obtenerHorario(a.horario);
+    const horarioB = obtenerHorario(b.horario);
+    const estadoA =
+      minutosActuales >= horarioA.inicio &&
+      minutosActuales <= horarioA.fin
+        ? "activo"
+        : minutosActuales < horarioA.inicio
+        ? "futuro"
+        : "terminado";
+    const estadoB =
+      minutosActuales >= horarioB.inicio &&
+      minutosActuales <= horarioB.fin
+        ? "activo"
+        : minutosActuales < horarioB.inicio
+        ? "futuro"
+        : "terminado";
+    const prioridad = {
+      activo: 0,
+      futuro: 1,
+      terminado: 2,
+    };
+    if (prioridad[estadoA] !== prioridad[estadoB]) {
+      return prioridad[estadoA] - prioridad[estadoB];
+    }
+    if (estadoA === "activo") {
+      return horarioA.fin - horarioB.fin;
+    }
+    if (estadoA === "futuro") {
+      return horarioA.inicio - horarioB.inicio;
+    }
+    return horarioB.fin - horarioA.fin;
+  });
+  
   const agrupados = categorias
     .map((cat) => ({ ...cat, items: anunciosFiltrados.filter((a) => a.categoria === cat.id) }))
     .filter((g) => g.items.length > 0);
@@ -154,7 +202,7 @@ export default function Home() {
       ) : (
         
         <VStack spacing={4} w="full" maxW="800px" mx="auto">
-          {anunciosFiltrados.map((anuncio) => (
+          {anunciosOrdenados.map((anuncio) => (
             <TarjetaAnuncios key={anuncio.id} anuncio={anuncio} />
           ))}
         </VStack>
