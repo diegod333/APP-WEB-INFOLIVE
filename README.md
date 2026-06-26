@@ -23,12 +23,13 @@ Historias de Usuario:
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
-| 2.1 | Agregar campo nombre del vendedor en los anuncios | 1 | Diego | 1 | terminado|
+| 2.1 | Agregar campo nombre del vendedor en los anuncios | 1 | Agustin | 2 | terminado|
 | 2.2 | Agregar campo ubicación dentro del campus | 1 | Diego | 2 | terminado |
-| 2.3 | Mostrar ubicación en la tarjeta del anuncio | 1 |  | 2 | no comenzado |
-| 2.4 | Añadir al inicio de sesion nombre que se pondrá el anunciante | 1 | Sebastian | 2 | no comenzado |
-| 2.5 | Agregar nombre del anunciante al spreadsheet | 15 min |  | 2 | no comenzado |
-| 2.6 | Hacer llamado del nombre hacia la tarjeta del anunciante | 1 |  | 2 | no comenzado |
+| 2.3 | Mostrar ubicación en la tarjeta del anuncio | 1 | Agustin | 2 | terminado |
+| 2.4 | Añadir al inicio de sesion nombre que se pondrá el anunciante | 1 | Diego | 2 | Terminado |
+| 2.5 | Agregar nombre del anunciante al spreadsheet | 15 min | Diego | 2 | Terminado |
+| 2.6 | Hacer llamado del nombre hacia la tarjeta del anunciante | 1 | Diego | 2 | terminado |
+| 2.7 | Agregar imagen del producto en la tarjeta del anuncio | 2 | | 3 | No comenzado |
 
 [HDU3] Como usuario quiero tener la capacidad de guardar anuncios de mi interes para que no desaparezca con el tiempo y olvide la informacion.
 
@@ -37,12 +38,14 @@ Historias de Usuario:
 | 3.1 | Crear vista para consultar anuncios guardados | 2 | Javier | 2 | terminado |
 | 3.2 | Agregar interfaz para acceder a anuncios guardados (Anuncios guardados) | 2 | Javier | 2 | terminado |
 | 3.3 | Diseñar funcionalidad de anuncios favoritos con respectivos botones | 2 | Sebastian | 1 | terminado|
+| 3.3 | Agregar el icono de guardado de anuncios y dejar funcional | 2 | Javier | 3 | No comenzado |
 
 [HDU4] Como usuario quiero saber si la persona que esté vendiendo aun tiene productos para vender.
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
 | 4.1 | Agregar estado de disponibilidad a los anuncios | 1 | Diego | 2 | terminado |
+| 4.2 | Agregar estado de disponibilidad a los anuncios con mejor interfaz | 2 | Agustin | 3 | No comenzado |
 
 [HDU5] Como usuario quiero subir mi propio anuncio y que los demas estudiantes sepan que estoy vendiendo bebidas, algun dulce casero, etc.
 
@@ -53,6 +56,7 @@ Historias de Usuario:
 | 5.3 | Permitir ingresar ubicación del vendedor | 1 | Diego | 2 | terminado |
 | 5.4 | Implementar publicación de anuncios | 1 | Diego | 2 | terminado |
 | 5.5 | Implementar codigos de cuentas y poder publicar/editar anuncios mediante el login con codigo| 4 | Diego | 2 | terminado|
+| 5.6 | Agregar el poder subir imagenes al publicar y editar el producto | 2 | | 3 | No comenzado |
 
 [HDU6] Como administrador quiero acceder a un log de eventos para saber como se usa la aplicacion.
 
