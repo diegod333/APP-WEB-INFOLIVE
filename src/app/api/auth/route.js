@@ -1,4 +1,5 @@
 import { google } from "googleapis";
+import { registrarLog } from "@/lib/logs";
 
 function getSheetsClient() {
   const auth = new google.auth.GoogleAuth({
@@ -43,6 +44,11 @@ export async function POST(request) {
     );
 
     if (filaIndex === -1) {
+      await registrarLog(
+        "Desconocido",
+        "LOGIN_FALLIDO",
+        `Código: ${codigoIngresado}`
+      );
       return Response.json(
         { ok: false, message: "Código no válido. Contáctanos para obtener el tuyo." },
         { status: 401 }
@@ -64,6 +70,13 @@ export async function POST(request) {
 
     // Si el Sheet ya tiene nombre guardado, usarlo directo (no pedir de nuevo)
     if (nombreEnSheet) {
+
+      await registrarLog(
+        nombreEnSheet,
+        "INICIO_SESION",
+        "Inicio de sesión exitoso"
+      );
+
       return Response.json({
         ok: true,
         usuario: {
@@ -91,6 +104,11 @@ export async function POST(request) {
         values: [[nombreIngresado]],
       },
     });
+    await registrarLog(
+      nombreIngresado,
+      "PRIMER_INICIO_SESION",
+      "Registró su nombre e inició sesión"
+    );
 
     return Response.json({
       ok: true,
