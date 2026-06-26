@@ -24,7 +24,7 @@ export default function PublicarPage() {
   const [ubicacion, setUbicacion] = useState("");
   const [horaInicio, setHoraInicio] = useState("");
   const [horaFin, setHoraFin] = useState("");
-  const [stock, setStock] = useState("");
+  const [stock, setStock] = useState("disponible");
   const [cargando, setCargando] = useState(false);
   const { usuario, cargandoSesion } = useSesion();
   const router = useRouter();
@@ -145,10 +145,14 @@ export default function PublicarPage() {
           />
 
           <Textarea
-            placeholder="Descripción"
-            bg="white"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
+              placeholder="Descripción"
+              bg="white"
+              value={descripcion}
+              onChange={(e) => {
+                if (e.target.value.length <= 500) setDescripcion(e.target.value);
+              }}
+              resize="none"
+              rows={3}
           />
 
           <Input
