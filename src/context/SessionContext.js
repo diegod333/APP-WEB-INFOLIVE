@@ -26,11 +26,26 @@ export function SessionProvider({ children }) {
     localStorage.setItem("infolive_sesion", JSON.stringify(datos));
   };
 
-  const cerrarSesion = () => {
+ const cerrarSesion = async () => {
+  const usuarioActual = usuario;
+
+  try {
+    await fetch("/api/logs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        usuario: usuarioActual?.nombre || "Desconocido",
+        accion: "LOGOUT",
+        detalle: "Cierre de sesión",
+      }),
+    });
+  } catch (error) {
+    console.error("Error registrando logout:", error);
+  } finally {
     setUsuario(null);
     localStorage.removeItem("infolive_sesion");
-  };
-
+  }
+};
   return (
     <SessionContext.Provider value={{ usuario, cargandoSesion, iniciarSesion, cerrarSesion }}>
       {children}
