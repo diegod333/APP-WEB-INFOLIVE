@@ -11,6 +11,7 @@ import {
   Button,
   Textarea,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,6 +28,7 @@ export default function PublicarPage() {
   const [cargando, setCargando] = useState(false);
   const { usuario, cargandoSesion } = useSesion();
   const router = useRouter();
+  const toast = useToast();
 
   useEffect(() => {
     const ahora = new Date();
@@ -87,10 +89,23 @@ export default function PublicarPage() {
       const data = await res.json();
 
       if (data.ok) {
-        alert("Anuncio publicado correctamente");
+        toast({ 
+          title: `Anuncio publicado`,
+          description: "El anuncio ha sido publicado correctamente en InfoLive!.",
+          status: "success",
+          duration: 1500,
+        });
         limpiarFormulario();
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
       } else {
-        alert("Error al publicar el anuncio");
+          toast({ 
+          title: `Anuncio NO publicado`,
+          description: "El anuncio no ha sido publicado, intentalo de nuevo.",
+          status: "error",
+          duration: 1500,
+        });
       }
     } catch (error) {
       console.error("Error:", error);

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Box, Container, VStack, HStack, Text, Input, Button, Select, Textarea,
+import { 
+  Box, Container, VStack, HStack, Text, Input, Button, Select, Textarea, useToast,
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure 
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,9 +12,11 @@ import { useSesion } from "@/context/SessionContext";
 export default function MisAnunciosPage() {
   const [anuncios, setAnuncios] = useState([]);
   const [cargando, setCargando] = useState(true);
-
-  const { usuario, cargandoSesion } = useSesion();
+  const {usuario, cargandoSesion} = useSesion();
   const router = useRouter();
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [anuncioAEliminar, setAnuncioAEliminar] = useState(null);
 
   useEffect(() => {
     if (!cargandoSesion && !usuario) {
@@ -59,9 +62,22 @@ export default function MisAnunciosPage() {
       });
       const data = await res.json();
       if (data.ok) {
-        alert("Anuncio actualizado");
+        toast({ 
+          title: `Anuncio actualizado`,
+          description: "El anuncio fue actualizado correctamente!.",
+          status: "success",
+          duration: 1500,
+        });
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
       } else {
-        alert(data.message || "Error al actualizar");
+        toast({ 
+          title: `Error al actualizar`,
+          description: "Inténtalo nuevamente.",
+          status: "error",
+          duration: 1500,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -70,9 +86,6 @@ export default function MisAnunciosPage() {
   };
 
   const eliminarAnuncio = async (anuncio) => {
-    const confirmar = confirm("¿Seguro que quieres eliminar este anuncio?");
-    if (!confirmar) return;
-
     try {
       const res = await fetch("/api/anuncios", {
         method: "DELETE",
@@ -81,10 +94,20 @@ export default function MisAnunciosPage() {
       });
       const data = await res.json();
       if (data.ok) {
-        alert("Anuncio eliminado");
+        toast({ 
+          title: `Anuncio eliminado`,
+          description: "El anuncio fue eliminado correctamente!.",
+          status: "success",
+          duration: 1500,
+        });
         setAnuncios(anuncios.filter((a) => a.id !== anuncio.id));
       } else {
-        alert(data.message || "Error al eliminar");
+          toast({ 
+          title: `Error al eliminar`,
+          description: "Intenta eliminarlo nuevamente!.",
+          status: "error",
+          duration: 1500,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -155,7 +178,8 @@ export default function MisAnunciosPage() {
                   <Button bg="#4f46e5" color="white" borderRadius="99px" fontWeight="700" _hover={{ bg: "#4338ca" }} onClick={() => guardarCambios(anuncio)}>
                     Guardar cambios
                   </Button>
-                  <Button bg="red.500" color="white" borderRadius="99px" fontWeight="700" _hover={{ bg: "red.600" }} onClick={() => eliminarAnuncio(anuncio)}>
+                  <Button 
+                    bg="red.500" color="white" borderRadius="99px" fontWeight="700" _hover={{ bg: "red.600" }} onClick={() => {setAnuncioAEliminar(anuncio); onOpen();}}>
                     Eliminar anuncio
                   </Button>
                 </VStack>
@@ -164,6 +188,23 @@ export default function MisAnunciosPage() {
           )}
         </VStack>
       </Container>
+      
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirmar eliminación</ModalHeader>
+          <ModalBody>
+            ¿Estás seguro de que quieres eliminar este anuncio?
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} borderRadius="99px" onClick={onClose}>Cancelar</Button>
+            <Button colorScheme="red" borderRadius="99px" onClick={() => {
+              eliminarAnuncio(anuncioAEliminar);
+              onClose();
+            }}>Eliminar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
