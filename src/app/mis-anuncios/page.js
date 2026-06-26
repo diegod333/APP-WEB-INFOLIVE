@@ -169,7 +169,22 @@ export default function MisAnunciosPage() {
                     <option value="10000">Edificio 10000</option>
                     <option value="14000">Edificio 14000</option>
                   </Select> 
-                  <Input value={anuncio.horario} onChange={(e) => cambiarCampo(index, "horario", e.target.value)} />
+                  <HStack>
+                    <Input
+                      bg="white"
+                      value={anuncio.horario ? anuncio.horario.split(" - ")[0] : ""}
+                      readOnly
+                    />
+                    <Input
+                      type="time"
+                      bg="white"
+                      value={anuncio.horario ? anuncio.horario.split(" - ")[1] || "" : ""}
+                      onChange={(e) => {
+                        const inicio = anuncio.horario ? anuncio.horario.split(" - ")[0] || "" : "";
+                        cambiarCampo(index, "horario", `${inicio} - ${e.target.value}`);
+                      }}
+                    />
+                  </HStack>
                   <Select value={anuncio.stock} onChange={(e) => cambiarCampo(index, "stock", e.target.value)}>
                     <option value="disponible">Disponible</option>
                     <option value="agotado">Agotado</option>
