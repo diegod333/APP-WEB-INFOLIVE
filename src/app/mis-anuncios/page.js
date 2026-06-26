@@ -156,7 +156,7 @@ export default function MisAnunciosPage() {
                   <Text fontSize="12px" color="gray.400">ID: {anuncio.id}</Text>
 
                   <Input value={anuncio.titulo} onChange={(e) => cambiarCampo(index, "titulo", e.target.value)} />
-                  <Textarea value={anuncio.descripcion} onChange={(e) => cambiarCampo(index, "descripcion", e.target.value)} />
+                  <Textarea resize="none" rows={3} value={anuncio.descripcion} onChange={(e) => cambiarCampo(index, "descripcion", e.target.value)} />
                   <Input value={anuncio.precio} onChange={(e) => cambiarCampo(index, "precio", e.target.value)} />
                   <Select value={anuncio.ubicacion} onChange={(e) => cambiarCampo(index, "ubicacion", e.target.value)}>
                     <option value="2000">Edificio 2000</option>
