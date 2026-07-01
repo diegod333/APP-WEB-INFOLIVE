@@ -94,7 +94,6 @@ export async function POST(request) {
     const { token } = await request.json();
     const tokenLimpio = token.trim().toUpperCase();
 
-    // Usamos la función optimizada de arriba
     const sheets = getSheetsClient();
 
     const res = await sheets.spreadsheets.values.get({
@@ -132,10 +131,41 @@ export async function PUT(request) {
     const body = await request.json();
     const sheets = getSheetsClient();
 
-    await sheets.spreadsheets.values.update({
+  
+    if (body.rowNumber) {
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: process.env.GOOGLE_SHEET_ID,
+        range: `Hoja 1!A${body.rowNumber}:J${body.rowNumber}`,
+        valueInputOption: "USER_ENTERED",
+        requestBody: {
+          values: [
+            [
+              body.id,
+              body.titulo,
+              body.descripcion,
+              body.precio,
+              body.ubicacion,
+              body.horario,
+              body.stock,
+              body.dueno_anuncio,
+              body.createdAt,
+              body.imagen || "", 
+            ],
+          ],
+        },
+      });
+      
+      return Response.json({
+        ok: true,
+        message: "Anuncio actualizado correctamente",
+      });
+    } 
+    
+    await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: `Hoja 1!A${body.rowNumber}:J${body.rowNumber}`,
+      range: "Hoja 1!A:J",
       valueInputOption: "USER_ENTERED",
+      insertDataOption: "INSERT_ROWS",
       requestBody: {
         values: [
           [
@@ -153,13 +183,14 @@ export async function PUT(request) {
         ],
       },
     });
-    
+
     return Response.json({
       ok: true,
-      message: "Anuncio actualizado correctamente",
+      message: "Anuncio creado e insertado correctamente en Google Sheets",
     });
+
   } catch (error) {
-    console.error("Error actualizando anuncio:", error);
+    console.error("Error procesando anuncio en el Spreadsheet:", error);
 
     return Response.json(
       { ok: false, message: error.message },
