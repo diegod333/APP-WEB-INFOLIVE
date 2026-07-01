@@ -47,6 +47,7 @@ export default function Home() {
     const minutosActuales = ahora.getHours() * 60 + ahora.getMinutes();
     
     const obtenerHorario = (horario) => {
+      if (!horario || !horario.includes(" - ")) return { inicio: 0, fin: 1440 };
       const [inicio, fin] = horario.split(" - ");
       const [hInicio, mInicio] = inicio.split(":").map(Number);
       const [hFin, mFin] = fin.split(":").map(Number);
@@ -89,10 +90,6 @@ export default function Home() {
     }
     return horarioB.fin - horarioA.fin;
   });
-  
-  const agrupados = categorias
-    .map((cat) => ({ ...cat, items: anunciosFiltrados.filter((a) => a.categoria === cat.id) }))
-    .filter((g) => g.items.length > 0);
 
   const isInicio = activeCategory === "inicio" && search === "";
 
@@ -102,20 +99,23 @@ export default function Home() {
 
   return (
     <Box minH="100vh" bg="#f8f9fc">
+      {/* BARRA DE NAVEGACIÓN SUPERIOR */}
       <Box bg="white" borderBottom="1px solid" borderColor="gray.100" position="sticky" top={0} zIndex={100}>
         <Container maxW="720px">
           <HStack h="56px" spacing={3}>
 
-            <HStack spacing={2} flex="1" cursor="pointer" onClick={() => setActiveCategory("inicio")}>
+            {/* LOGO */}
+            <HStack spacing={2} flex="1" cursor="pointer" onClick={() => { setActiveCategory("inicio"); setSearch(""); }}>
               <Box w="28px" h="28px" borderRadius="7px" bg="#4f46e5" display="flex" alignItems="center" justifyContent="center">
                 <Text color="white" fontWeight="800" fontSize="12px">IL</Text>
               </Box>
               <VStack align="start" spacing={0}>
                 <Text fontWeight="700" fontSize="14px" color="gray.900" lineHeight="1">InfoLive</Text>
-                <Text fontSize="10px" color="gray.400" lineHeight="1">INFORMÁTICA UACH</Text>
+                <Text fontSize="9px" color="gray.400" fontWeight="600" lineHeight="1" letterSpacing="0.5px">MUESTRA EDUCACIÓN SUPERIOR</Text>
               </VStack>
             </HStack>
 
+            {/* BOTÓN PUBLICAR */}
             {usuario && (
               <Link href="/publicar">
                 <Button size="sm" bg="#4f46e5" color="white" borderRadius="99px" px={4} fontSize="12px" fontWeight="600" _hover={{ bg: "#4338ca" }}>
@@ -124,9 +124,10 @@ export default function Home() {
               </Link>
             )}
 
+            {/* BARRA DE BÚSQUEDA */}
             <InputGroup maxW="180px" size="sm">
               <Input
-                placeholder="Buscar anuncios..."
+                placeholder="Buscar comida..."
                 borderRadius="99px"
                 bg="gray.50"
                 border="1px solid"
@@ -147,13 +148,13 @@ export default function Home() {
                 borderRadius="full"
                 bg={usuario ? "#4f46e5" : "gray.200"}
                 display="flex"
-                alignItems="center"
+                align="center"
                 justifyContent="center"
                 cursor="pointer"
                 _hover={{ bg: usuario ? "#4338ca" : "gray.300" }}
                 transition="all 0.2s"
               >
-                <Text color={usuario ? "white" : "gray.500"} fontSize="11px" fontWeight="700" textAlign="center" lineHeight="1">
+                <Text color={usuario ? "white" : "gray.500"} fontSize="11px" fontWeight="700" textAlign="center" lineHeight="32px">
                   {iniciales}
                 </Text>
               </MenuButton>
@@ -190,25 +191,22 @@ export default function Home() {
         </Container>
       </Box>
 
+      {/* CONTENEDOR DE ANUNCIOS */}
       <Container maxW="720px" py={6} px={4}>
-  {isInicio ? (
-    <VStack align="stretch" spacing={6}>
-      
-      
-      {anunciosFiltrados.length === 0 ? (
-        <Box textAlign="center" py={16} color="gray.400">
-          <Text fontSize="14px">No se encontraron anuncios de comida.</Text>
-        </Box>
-      ) : (
-        
-        <VStack spacing={4} w="full" maxW="800px" mx="auto">
-          {anunciosOrdenados.map((anuncio) => (
-            <TarjetaAnuncios key={anuncio.id} anuncio={anuncio} />
-          ))}
-        </VStack>
-      )} 
-
-    </VStack>
+        {isInicio ? (
+          <VStack align="stretch" spacing={6}>
+            {anunciosOrdenados.length === 0 ? (
+              <Box textAlign="center" py={16} color="gray.400">
+                <Text fontSize="14px">No se encontraron anuncios activos.</Text>
+              </Box>
+            ) : (
+              <VStack spacing={4} w="full">
+                {anunciosOrdenados.map((anuncio) => (
+                  <TarjetaAnuncios key={anuncio.id} anuncio={anuncio} />
+                ))}
+              </VStack>
+            )} 
+          </VStack>
         ) : (
           <VStack align="stretch" spacing={4}>
             <HStack justify="space-between">
@@ -216,17 +214,17 @@ export default function Home() {
                 {search !== "" ? `Resultados: "${search}"` : categorias.find((c) => c.id === activeCategory)?.label ?? "Anuncios"}
               </Text>
               <Text fontSize="12px" color="gray.400">
-                {filtered.length} {filtered.length === 1 ? "anuncio" : "anuncios"}
+                {anunciosOrdenados.length} {anunciosOrdenados.length === 1 ? "anuncio" : "anuncios"}
               </Text>
             </HStack>
-            {filtered.length === 0 ? (
+            {anunciosOrdenados.length === 0 ? (
               <Box textAlign="center" py={16} color="gray.400">
                 <Text fontSize="14px">No hay anuncios aquí todavía.</Text>
                 {search && <Button mt={4} size="sm" onClick={() => setSearch("")}>Borrar búsqueda</Button>}
               </Box>
             ) : (
               <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={3}>
-                {filtered.map((a) => (
+                {anunciosOrdenados.map((a) => (
                   <TarjetaAnuncios key={a.id} anuncio={a} />
                 ))}
               </SimpleGrid>
