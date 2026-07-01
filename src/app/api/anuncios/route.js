@@ -1,5 +1,7 @@
 import { google } from "googleapis";
 
+export const dynamic = "force-dynamic";
+
 function getSheetsClient() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
@@ -49,7 +51,6 @@ export async function DELETE(request) {
   }
 }
 
-
 export async function GET() {
   try {
     const sheets = getSheetsClient();
@@ -74,6 +75,7 @@ export async function GET() {
       stock: row[6] || "",
       dueno_anuncio: row[7] || "",
       createdAt: row[8] || "",
+      imagen: row[9] || "", 
     }));
 
     return Response.json({ ok: true, anuncios });
@@ -89,41 +91,39 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const body = await request.json();
+    const { token } = await request.json();
+    const tokenLimpio = token.trim().toUpperCase();
+
+    // Usamos la función optimizada de arriba
     const sheets = getSheetsClient();
 
-    await sheets.spreadsheets.values.append({
+    const res = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "Hoja 1!A:J",
-      valueInputOption: "USER_ENTERED",
-      requestBody: {
-        values: [
-          [
-            Date.now().toString(),
-            body.titulo,
-            body.descripcion,
-            body.precio,
-            body.ubicacion,
-            body.horario,
-            body.stock,
-            body.dueno_anuncio,
-            new Date().toISOString(),
-          ],
-        ],
-      },
+      range: "Usuarios!A:C",
     });
 
-    return Response.json({
-      ok: true,
-      message: "Anuncio guardado correctamente",
-    });
-  } catch (error) {
-    console.error("Error guardando anuncio:", error);
+    const rows = res.data.values || [];
+    const dataRows = rows.slice(1); 
 
-    return Response.json(
-      { ok: false, message: error.message },
-      { status: 500 }
+    const filaUsuario = dataRows.find(
+      (row) => row[0] && row[0].trim().toUpperCase() === tokenLimpio && row[2] && row[2].trim().toUpperCase() === "TRUE"
     );
+
+    if (filaUsuario) {
+      return Response.json({
+        ok: true,
+        usuario: {
+          codigo: filaUsuario[0].trim(),
+          nombre: filaUsuario[1] || "Usuario Nuevo",
+        },
+      });
+    }
+
+    return Response.json({ ok: false, message: "Token inválido o inactivo." }, { status: 401 });
+
+  } catch (error) {
+    console.error("Error en la validación de usuarios:", error);
+    return Response.json({ ok: false, message: "Error interno del servidor al validar token." }, { status: 500 });
   }
 }
 
@@ -148,6 +148,7 @@ export async function PUT(request) {
             body.stock,
             body.dueno_anuncio,
             body.createdAt,
+            body.imagen || "", 
           ],
         ],
       },
