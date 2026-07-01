@@ -25,6 +25,11 @@ export default function PublicarPage() {
   const [horaInicio, setHoraInicio] = useState("");
   const [horaFin, setHoraFin] = useState("");
   const [stock, setStock] = useState("disponible");
+  
+  // ESTADOS PARA LA FOTO REAL
+  const [archivoFoto, setArchivoFoto] = useState(null);
+  const [nombreFoto, setNombreFoto] = useState("");
+  
   const [cargando, setCargando] = useState(false);
   const { usuario, cargandoSesion } = useSesion();
   const router = useRouter();
@@ -32,23 +37,19 @@ export default function PublicarPage() {
 
   useEffect(() => {
     const ahora = new Date();
-
     const hora = ahora.toLocaleTimeString("es-CL", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
     });
-
     setHoraInicio(hora);
   }, []);
 
-    // Redirigir si no hay sesión
   useEffect(() => {
     if (!cargandoSesion && !usuario) {
       router.push("/login");
     }
   }, [usuario, cargandoSesion, router]);
-
 
   const limpiarFormulario = () => {
     setTitulo("");
@@ -56,30 +57,79 @@ export default function PublicarPage() {
     setPrecio("");
     setUbicacion("");
     setHoraFin("");
-    setStock("");
+    setStock("disponible");
+    setArchivoFoto(null);
+    setNombreFoto("");
+  };
+
+  const alCambiarFoto = (e) => {
+    const archivo = e.target.files[0];
+    if (archivo) {
+      setArchivoFoto(archivo);
+      setNombreFoto(archivo.name);
+    }
   };
 
   const guardarAnuncio = async () => {
     if (!titulo || !descripcion || !ubicacion || !horaInicio || !horaFin || !stock) {
-      alert("Completa los campos principales antes de publicar.");
+      toast({
+        title: "Campos incompletos",
+        description: "Por favor, completa los campos principales antes de publicar.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     }
 
     setCargando(true);
+    let urlImagenFinal = "";
+
+    if (archivoFoto) {
+      try {
+        const formData = new FormData();
+        formData.append("image", archivoFoto);
+
+        const API_KEY_IMGBB = "ea564bb2b637eb9e143211c3f1353204"; 
+
+        const respuestaImgBB = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY_IMGBB}`, {
+          method: "POST",
+          body: formData,
+        });
+
+        const datosImgBB = await respuestaImgBB.json();
+        
+        if (datosImgBB.success) {
+          urlImagenFinal = datosImgBB.data.url; 
+        } else {
+          console.error("Error al subir a ImgBB:", datosImgBB);
+        }
+      } catch (err) {
+        console.error("Error en la conexión con ImgBB:", err);
+      }
+    }
+
+    
+    const precioLimpio = precio.replace("$", "").trim();
 
     const anuncio = {
+      id: crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).substring(2, 10),
       titulo,
       descripcion,
-      precio,
+      precio: precioLimpio,
       ubicacion,
       horario: `${horaInicio} - ${horaFin}`,
       stock,
-      dueno_anuncio: usuario.nombre,
+      imagen: urlImagenFinal, 
+      dueno_anuncio: usuario?.nombre || "Anónimo",
+      categoria: "comida", 
+      createdAt: new Date().toLocaleDateString("es-CL")
     };
 
     try {
+  
       const res = await fetch("/api/anuncios", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -91,25 +141,20 @@ export default function PublicarPage() {
       if (data.ok) {
         toast({ 
           title: `Anuncio publicado`,
-          description: "El anuncio ha sido publicado correctamente en InfoLive!.",
+          description: "¡Publicado correctamente en el sistema!",
           status: "success",
           duration: 1500,
         });
         limpiarFormulario();
         setTimeout(() => {
           router.push("/");
-        }, 2000);
+        }, 1600);
       } else {
-          toast({ 
-          title: `Anuncio NO publicado`,
-          description: "El anuncio no ha sido publicado, intentalo de nuevo.",
-          status: "error",
-          duration: 1500,
-        });
+        toast({ title: `Error`, description: data.message || "No se pudo publicar.", status: "error" });
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Error de conexión al publicar el anuncio");
+      toast({ title: "Error de red", description: "No se pudo conectar con el servidor.", status: "error" });
     } finally {
       setCargando(false);
     }
@@ -128,36 +173,59 @@ export default function PublicarPage() {
       <Container maxW="600px" py={8}>
         <VStack align="stretch" spacing={4}>
           <Link href="/">
-            <Text fontSize="13px" color="#4f46e5" cursor="pointer">
-              ← Volver
-            </Text>
+            <Text fontSize="13px" color="#4f46e5" cursor="pointer">← Volver</Text>
           </Link>
 
-          <Text fontSize="24px" fontWeight="800" color="gray.900">
-            Publicar anuncio
-          </Text>
+          <Text fontSize="24px" fontWeight="800" color="gray.900">Publicar anuncio</Text>
 
           <Input
-            placeholder="Título del anuncio"
+            placeholder="Título del anuncio (Ej: Completos gigantes, Empanadas)"
             bg="white"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
           />
 
           <Textarea
-              placeholder="Descripción"
-              bg="white"
-              value={descripcion}
-              onChange={(e) => {
-                if (e.target.value.length <= 500) setDescripcion(e.target.value);
-              }}
-              resize="none"
-              rows={3}
+            placeholder="Descripción del producto o ingredientes..."
+            bg="white"
+            value={descripcion}
+            onChange={(e) => { if (e.target.value.length <= 500) setDescripcion(e.target.value); }}
+            resize="none"
+            rows={3}
           />
 
+          <Box bg="white" p={4} borderRadius="12px" border="1px solid #e5e7eb">
+            <Text fontSize="14px" fontWeight="700" color="gray.800" mb={2}>
+              Foto del producto (Opcional)
+            </Text>
+            <HStack>
+              <Button
+                as="label"
+                htmlFor="foto-input"
+                cursor="pointer"
+                bg="gray.100"
+                _hover={{ bg: "gray.200" }}
+                fontSize="14px"
+              >
+                📸 Seleccionar Foto
+              </Button>
+              <input
+                id="foto-input"
+                type="file"
+                accept="image/*"
+                onChange={alCambiarFoto}
+                style={{ display: "none" }}
+              />
+              <Text fontSize="13px" color="gray.600" isTruncated maxW="250px">
+                {nombreFoto || "Ningún archivo seleccionado"}
+              </Text>
+            </HStack>
+          </Box>
+
           <Input
-            placeholder="Precio o información extra"
+            placeholder="Precio (Ej: 2500)"
             bg="white"
+            type="text"
             value={precio}
             onChange={(e) => setPrecio(e.target.value)}
           />
@@ -181,29 +249,11 @@ export default function PublicarPage() {
 
           <Box bg="white" p={4} borderRadius="12px" border="1px solid #e5e7eb">
             <VStack align="stretch" spacing={3}>
-              <Text fontSize="14px" fontWeight="700" color="gray.800">
-                Horario disponible
-              </Text>
-              
+              <Text fontSize="14px" fontWeight="700" color="gray.800">Horario disponible</Text>
               <HStack>
-                <Input
-                  placeholder="Hora inicio"
-                  bg="white"
-                  value={horaInicio}
-                  readOnly
-                />
-
-                <Input
-                  type="time"
-                  bg="white"
-                  value={horaFin}
-                  onChange={(e) => setHoraFin(e.target.value)}
-                />
+                <Input placeholder="Hora inicio" bg="white" value={horaInicio} readOnly />
+                <Input type="time" bg="white" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} />
               </HStack>
-
-              <Text fontSize="12px" color="gray.400">
-                Ejemplo: disponible desde ahora hasta las 13:30.
-              </Text>
             </VStack>
           </Box>
 
@@ -220,6 +270,7 @@ export default function PublicarPage() {
           <Button
             onClick={guardarAnuncio}
             isLoading={cargando}
+            loadingText="Subiendo imagen y publicando..."
             bg="#4f46e5"
             color="white"
             borderRadius="99px"
