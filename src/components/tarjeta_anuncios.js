@@ -1,8 +1,14 @@
 "use client";
 
-import { Box, HStack, VStack, Text, Image, Avatar } from "@chakra-ui/react";
+import {
+  Box, HStack, VStack, Text, Image, Avatar,
+  Modal, ModalOverlay, ModalContent, ModalHeader,
+  ModalCloseButton, ModalBody, useDisclosure,
+} from "@chakra-ui/react";
 
 export default function TarjetaAnuncios({ anuncio }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   if (!anuncio) return null;
 
   const imagenPublicacion = anuncio.imagen || "https://cdn-icons-png.flaticon.com/512/10449/10449543.png";
@@ -98,6 +104,11 @@ export default function TarjetaAnuncios({ anuncio }) {
       w="full"
       opacity={anuncioTerminado ? 0.6 : 1}
       filter={anuncioTerminado ? "grayscale(65%)" : "none"}
+      cursor="pointer"
+      transition="all 0.15s ease"
+      _hover={{ borderColor: "#4f46e5", shadow: "md" }}
+      _active={{ transform: "scale(0.99)" }}
+      onClick={onOpen}
     >
       <HStack align="center" spacing={{ base: 3, md: 5 }} w="full">
         
@@ -190,6 +201,91 @@ export default function TarjetaAnuncios({ anuncio }) {
         </Box>
 
       </HStack>
+
+      {/* MODAL CON EL DETALLE COMPLETO DEL ANUNCIO */}
+      <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior="inside">
+        <ModalOverlay bg="blackAlpha.600" />
+        <ModalContent
+          borderRadius="16px"
+          mx={3}
+          maxH="85vh"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ModalHeader pb={2} pr={10}>
+            <HStack spacing={3} align="center">
+              <Avatar
+                name={anuncio.dueno_anuncio}
+                getInitials={() => inicialVendedor}
+                bg="white"
+                color="gray.800"
+                border="2px solid"
+                borderColor="gray.800"
+                size="sm"
+                fontWeight="700"
+                fontSize="14px"
+              />
+              <VStack align="start" spacing={0}>
+                <Text fontSize="16px" fontWeight="800" color="gray.900" lineHeight="1.2">
+                  {anuncio.titulo}
+                </Text>
+                <Text fontSize="12px" fontWeight="600" color="gray.400">
+                  {anuncio.dueno_anuncio || "Vendedor"}
+                </Text>
+              </VStack>
+            </HStack>
+          </ModalHeader>
+
+          <ModalCloseButton borderRadius="full" />
+
+          <ModalBody pb={6}>
+            <VStack align="stretch" spacing={4}>
+              <HStack justify="space-between" wrap="wrap" spacing={2}>
+                <Text color="#4f46e5" fontSize="20px" fontWeight="800">
+                  {renderPrecio()}
+                </Text>
+
+                <HStack spacing={2}>
+                  {anuncio.horario && (
+                    <Box
+                      px={2}
+                      py={1}
+                      borderRadius="8px"
+                      bg={colorContador.bg}
+                      color={colorContador.color}
+                      border="1px solid"
+                      borderColor={colorContador.border}
+                      fontSize="11px"
+                      fontWeight="700"
+                    >
+                      ⏳ {contador}
+                    </Box>
+                  )}
+                  <HStack spacing={1.5}>
+                    <Box w="10px" h="10px" borderRadius="full" bg={colorPuntoStock} flexShrink={0} />
+                    <Text fontSize="12px" fontWeight="700" color={esDisponible ? "green.600" : "red.500"}>
+                      {esDisponible ? "Disponible" : "Agotado"}
+                    </Text>
+                  </HStack>
+                </HStack>
+              </HStack>
+
+              <Box>
+                <Text fontSize="11px" fontWeight="700" color="gray.400" mb={1} letterSpacing="0.5px">
+                  DESCRIPCIÓN
+                </Text>
+                <Text fontSize="14px" color="gray.700" whiteSpace="pre-wrap" lineHeight="1.6">
+                  {anuncio.descripcion}
+                </Text>
+              </Box>
+
+              <Text fontSize="13px" bg="gray.100" px={3} py={1.5} borderRadius="8px" color="gray.600" fontWeight="600" w="fit-content">
+                📍 Edif. {anuncio.ubicacion}
+              </Text>
+
+            </VStack>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
