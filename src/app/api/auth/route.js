@@ -43,11 +43,19 @@ export async function POST(request) {
       (row) => (row[0] || "").trim().toUpperCase() === codigoIngresado
     );
 
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded
+    ? forwarded.split(",")[0].trim()
+    : request.headers.get("x-real-ip") || "Desconocida";
+
     if (filaIndex === -1) {
+      
+      
       await registrarLog(
         "Desconocido",
         "LOGIN_FALLIDO",
-        `Código: ${codigoIngresado}`
+        `Código: ${codigoIngresado}`,
+        ip
       );
       return Response.json(
         { ok: false, message: "Código no válido. Contáctanos para obtener el tuyo." },
@@ -70,11 +78,13 @@ export async function POST(request) {
 
     // Si el Sheet ya tiene nombre guardado, usarlo directo (no pedir de nuevo)
     if (nombreEnSheet) {
+      console.log("Registrando login", nombreEnSheet, ip);
 
       await registrarLog(
         nombreEnSheet,
         "INICIO_SESION",
-        "Inicio de sesión exitoso"
+        "Inicio de sesión exitoso",
+        ip
       );
 
       return Response.json({
@@ -107,7 +117,8 @@ export async function POST(request) {
     await registrarLog(
       nombreIngresado,
       "PRIMER_INICIO_SESION",
-      "Registró su nombre e inició sesión"
+      "Registró su nombre e inició sesión",
+      ip
     );
 
     return Response.json({
