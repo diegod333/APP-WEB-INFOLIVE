@@ -1,5 +1,4 @@
 import { google } from "googleapis";
-
 function getSheetsClient() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
@@ -15,12 +14,12 @@ function getSheetsClient() {
   });
 }
 
-export async function registrarLog(usuario, accion, detalle) {
+export async function registrarLog(usuario, accion, detalle, ip) {
   const sheets = getSheetsClient();
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.GOOGLE_SHEET_ID,
-    range: "Logs!A:D",
+    range: "Logs!A:E",
     valueInputOption: "USER_ENTERED",
     requestBody: {
       values: [[
@@ -28,6 +27,7 @@ export async function registrarLog(usuario, accion, detalle) {
         usuario,
         accion,
         detalle,
+        ip,
       ]],
     },
   });
