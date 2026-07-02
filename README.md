@@ -62,6 +62,6 @@ Historias de Usuario:
 
 | id    | descripción | estimación horas | responsable | sprint | estado |
 | :---: | :---        | :---:            | :---:       | :---:  | :---:   |
-| 6.1 | Registrar eventos relevantes de uso de la aplicación | 6 | Javier | 3 | En progreso |
-| 6.2 | Implementar almacenamiento de logs en la base de datos | 5 | Javier | 3 | En progreso |
+| 6.1 | Registrar eventos relevantes de uso de la aplicación | 6 | Javier | 3 | Terminado |
+| 6.2 | Implementar almacenamiento de logs en la base de datos | 5 | Javier | 3 | Terminado |
 | 6.3 | Crear panel de administración para visualizar eventos registrados | 8 | Javier | 3 | no comenzado |
