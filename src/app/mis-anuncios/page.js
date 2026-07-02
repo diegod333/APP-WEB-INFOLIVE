@@ -158,7 +158,11 @@ export default function MisAnunciosPage() {
       const res = await fetch("/api/anuncios", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rowNumber: anuncio.rowNumber }),
+        body: JSON.stringify({
+          rowNumber: anuncio.rowNumber,
+          id: anuncio.id,
+          dueno_anuncio: anuncio.dueno_anuncio
+        }),
       });
       const data = await res.json();
       if (data.ok) {
