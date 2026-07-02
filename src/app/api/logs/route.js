@@ -1,43 +1,20 @@
-import { google } from "googleapis";
-
-function getSheetsClient() {
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-    },
-    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
-  });
-
-  return google.sheets({ version: "v4", auth });
-}
+import { registrarLog } from "@/lib/logs";
 
 export async function POST(request) {
-  try {
-    const body = await request.json();
+  const body = await request.json();
 
-    const sheets = getSheetsClient();
+  const forwarded = request.headers.get("x-forwarded-for");
 
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "Logs!A:D",
-      valueInputOption: "USER_ENTERED",
-      requestBody: {
-        values: [[
-          new Date().toISOString(),
-          body.usuario || "Desconocido",
-          body.accion || "UNKNOWN",
-          body.detalle || "",
-        ]],
-      },
-    });
+  const ip = forwarded
+    ? forwarded.split(",")[0].trim()
+    : request.headers.get("x-real-ip") || "Desconocida";
 
-    return Response.json({ ok: true });
-  } catch (error) {
-    console.error("LOG ERROR:", error);
-    return Response.json(
-      { ok: false, message: error.message },
-      { status: 500 }
-    );
-  }
+  await registrarLog(
+    body.usuario,
+    body.accion,
+    body.detalle,
+    ip
+  );
+
+  return Response.json({ ok: true });
 }
