@@ -13,6 +13,9 @@ export default function TarjetaAnuncios({ anuncio }) {
   const minutosActuales = ahora.getHours() * 60 + ahora.getMinutes();
 
   let contador = "00:00";
+  let anuncioActivo = false;
+  let anuncioTerminado = false;
+
   let colorContador = {
     bg: "gray.100",
     color: "gray.500",
@@ -22,26 +25,56 @@ export default function TarjetaAnuncios({ anuncio }) {
   if (anuncio.horario && anuncio.horario.includes(" - ")) {
     try {
       const [horaInicio, horaFin] = anuncio.horario.split(" - ");
+
+      const [hInicio, mInicio] = horaInicio.split(":").map(Number);
       const [hFin, mFin] = horaFin.split(":").map(Number);
-      
+
+      const minutosInicio = hInicio * 60 + mInicio;
       const minutosFin = hFin * 60 + mFin;
-      const tiempoRestante = Math.max(0, minutosFin - minutosActuales);
-      const horasRestantes = String(Math.floor(tiempoRestante / 60)).padStart(2, "0");
-      const minutosRestantes = String(tiempoRestante % 60).padStart(2, "0");
-      
-      contador = `${horasRestantes}:${minutosRestantes}`;
-      
-      if (tiempoRestante > 60) {
-        colorContador = { bg: "green.100", color: "green.700", border: "green.300" };
-      } else if (tiempoRestante > 30) {
-        colorContador = { bg: "yellow.100", color: "yellow.700", border: "yellow.300" };
-      } else if (tiempoRestante > 10) {
-        colorContador = { bg: "orange.100", color: "orange.700", border: "orange.300" };
-      } else if (tiempoRestante > 0) {
-        colorContador = { bg: "red.100", color: "red.700", border: "red.300" };
+
+      anuncioActivo =
+        minutosActuales >= minutosInicio &&
+        minutosActuales <= minutosFin;
+
+      anuncioTerminado =
+        minutosActuales > minutosFin;
+
+      if (anuncioActivo) {
+        const tiempoRestante = minutosFin - minutosActuales;
+
+        const horasRestantes = String(Math.floor(tiempoRestante / 60)).padStart(2, "0");
+        const minutosRestantes = String(tiempoRestante % 60).padStart(2, "0");
+
+        contador = `${horasRestantes}:${minutosRestantes}`;
+
+        if (tiempoRestante > 30) {
+          colorContador = {
+            bg: "green.100",
+            color: "green.700",
+            border: "green.300",
+          };
+        } else if (tiempoRestante > 20) {
+          colorContador = {
+            bg: "yellow.100",
+            color: "yellow.700",
+            border: "yellow.300",
+          };
+        } else if (tiempoRestante > 10) {
+          colorContador = {
+            bg: "orange.100",
+            color: "orange.700",
+            border: "orange.300",
+          };
+        } else {
+          colorContador = {
+            bg: "red.100",
+            color: "red.700",
+            border: "red.300",
+          };
+        }
       }
     } catch (e) {
-      console.error("Error al calcular el horario: ", e);
+      console.error("Error al calcular el horario:", e);
     }
   }
 
@@ -63,6 +96,8 @@ export default function TarjetaAnuncios({ anuncio }) {
       mb={4} 
       shadow="sm"
       w="full"
+      opacity={anuncioTerminado ? 0.6 : 1}
+      filter={anuncioTerminado ? "grayscale(65%)" : "none"}
     >
       <HStack align="center" spacing={{ base: 3, md: 5 }} w="full">
         
