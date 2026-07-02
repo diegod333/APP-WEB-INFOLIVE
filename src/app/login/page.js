@@ -115,7 +115,7 @@ export default function Login() {
               Acceso Institucional
             </Heading>
             <Text fontSize="13px" color="gray.500">
-              Ingresa tu código asignado en la Muestra de Educación Superior
+              Ingresa tu código asignado por nosotros!
             </Text>
           </VStack>
 
@@ -127,7 +127,7 @@ export default function Login() {
                 </FormLabel>
                 <Input
                   type="text"
-                  placeholder="Ej: 3333, QR12, JO37"
+                  placeholder="EJ: JZ41"
                   borderRadius="10px"
                   fontSize="14px"
                   bg="gray.50"
@@ -162,7 +162,7 @@ export default function Login() {
           <Box textAlign="center">
             <Link href="/">
               <Text fontSize="12px" color="gray.400" _hover={{ color: "#4f46e5", textDecoration: "underline" }}>
-                ← Volver al inicio
+                ← Volver al inicio sin inicio de sesión
               </Text>
             </Link>
           </Box>

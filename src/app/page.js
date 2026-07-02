@@ -111,7 +111,7 @@ export default function Home() {
               </Box>
               <VStack align="start" spacing={0}>
                 <Text fontWeight="700" fontSize="14px" color="gray.900" lineHeight="1">InfoLive</Text>
-                <Text fontSize="9px" color="gray.400" fontWeight="600" lineHeight="1" letterSpacing="0.5px">MUESTRA EDUCACIÓN SUPERIOR</Text>
+                <Text fontSize="9px" color="gray.400" fontWeight="600" lineHeight="1" letterSpacing="0.5px">Comida para informática</Text>
               </VStack>
             </HStack>
 

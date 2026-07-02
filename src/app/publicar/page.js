@@ -270,7 +270,7 @@ export default function PublicarPage() {
           <Button
             onClick={guardarAnuncio}
             isLoading={cargando}
-            loadingText="Subiendo imagen y publicando..."
+            loadingText="Publicando anuncio..."
             bg="#4f46e5"
             color="white"
             borderRadius="99px"

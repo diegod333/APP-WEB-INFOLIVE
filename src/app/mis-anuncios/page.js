@@ -3,11 +3,14 @@
 import { useEffect, useState } from "react";
 import { 
   Box, Container, VStack, HStack, Text, Input, Button, Select, Textarea, useToast,
-  Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure 
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
+  Image
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSesion } from "@/context/SessionContext";
+
+const API_KEY_IMGBB = "ea564bb2b637eb9e143211c3f1353204";
 
 export default function MisAnunciosPage() {
   const [anuncios, setAnuncios] = useState([]);
@@ -17,6 +20,12 @@ export default function MisAnunciosPage() {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [anuncioAEliminar, setAnuncioAEliminar] = useState(null);
+  // Guarda, por índice de anuncio, el archivo nuevo seleccionado (aún no subido)
+  const [archivosNuevaFoto, setArchivosNuevaFoto] = useState({});
+  // Marca, por índice de anuncio, si se pidió quitar la imagen actual
+  const [imagenesAEliminar, setImagenesAEliminar] = useState({});
+  // Índice del anuncio que está subiendo/guardando en este momento
+  const [subiendoIndex, setSubiendoIndex] = useState(null);
 
   useEffect(() => {
     if (!cargandoSesion && !usuario) {
@@ -53,15 +62,72 @@ export default function MisAnunciosPage() {
     setAnuncios(copia);
   };
 
-  const guardarCambios = async (anuncio) => {
+  const alCambiarFoto = (index, e) => {
+    const archivo = e.target.files[0];
+    if (archivo) {
+      setArchivosNuevaFoto((prev) => ({ ...prev, [index]: archivo }));
+      setImagenesAEliminar((prev) => ({ ...prev, [index]: false }));
+    }
+  };
+
+  const eliminarFotoActual = (index) => {
+    setImagenesAEliminar((prev) => ({ ...prev, [index]: true }));
+    setArchivosNuevaFoto((prev) => ({ ...prev, [index]: null }));
+  };
+
+  const guardarCambios = async (anuncio, index) => {
+    setSubiendoIndex(index);
     try {
+      let urlImagenFinal = anuncio.imagen || "";
+      const archivoNuevo = archivosNuevaFoto[index];
+
+      if (archivoNuevo) {
+        try {
+          const formData = new FormData();
+          formData.append("image", archivoNuevo);
+
+          const respuestaImgBB = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY_IMGBB}`, {
+            method: "POST",
+            body: formData,
+          });
+          const datosImgBB = await respuestaImgBB.json();
+
+          if (datosImgBB.success) {
+            urlImagenFinal = datosImgBB.data.url;
+          } else {
+            console.error("Error al subir a ImgBB:", datosImgBB);
+            toast({
+              title: "Error al subir la imagen",
+              description: "No se pudo subir la nueva imagen. Se guardarán los demás cambios.",
+              status: "warning",
+              duration: 2500,
+            });
+          }
+        } catch (err) {
+          console.error("Error en la conexión con ImgBB:", err);
+          toast({
+            title: "Error al subir la imagen",
+            description: "No se pudo conectar con el servicio de imágenes.",
+            status: "warning",
+            duration: 2500,
+          });
+        }
+      } else if (imagenesAEliminar[index]) {
+        urlImagenFinal = "";
+      }
+
+      const anuncioAGuardar = { ...anuncio, imagen: urlImagenFinal };
+
       const res = await fetch("/api/anuncios", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(anuncio),
+        body: JSON.stringify(anuncioAGuardar),
       });
       const data = await res.json();
       if (data.ok) {
+        cambiarCampo(index, "imagen", urlImagenFinal);
+        setArchivosNuevaFoto((prev) => ({ ...prev, [index]: null }));
+        setImagenesAEliminar((prev) => ({ ...prev, [index]: false }));
         toast({ 
           title: `Anuncio actualizado`,
           description: "El anuncio fue actualizado correctamente!.",
@@ -82,6 +148,8 @@ export default function MisAnunciosPage() {
     } catch (error) {
       console.error(error);
       alert("Error de conexión al actualizar");
+    } finally {
+      setSubiendoIndex(null);
     }
   };
 
@@ -157,6 +225,76 @@ export default function MisAnunciosPage() {
 
                   <Input value={anuncio.titulo} onChange={(e) => cambiarCampo(index, "titulo", e.target.value)} />
                   <Textarea resize="none" rows={3} value={anuncio.descripcion} onChange={(e) => cambiarCampo(index, "descripcion", e.target.value)} />
+
+                  <Box bg="#f8f9fc" p={3} borderRadius="12px" border="1px solid #e5e7eb">
+                    <Text fontSize="13px" fontWeight="700" color="gray.800" mb={2}>
+                      Foto del producto
+                    </Text>
+
+                    {archivosNuevaFoto[index] ? (
+                      <HStack mb={2} align="center">
+                        <Image
+                          src={URL.createObjectURL(archivosNuevaFoto[index])}
+                          alt="Nueva foto seleccionada"
+                          boxSize="60px"
+                          objectFit="cover"
+                          borderRadius="8px"
+                        />
+                        <Text fontSize="12px" color="gray.600" isTruncated maxW="180px">
+                          {archivosNuevaFoto[index].name} (nueva)
+                        </Text>
+                      </HStack>
+                    ) : anuncio.imagen && !imagenesAEliminar[index] ? (
+                      <HStack mb={2} align="center">
+                        <Image
+                          src={anuncio.imagen}
+                          alt="Imagen actual del anuncio"
+                          boxSize="60px"
+                          objectFit="cover"
+                          borderRadius="8px"
+                        />
+                        <Text fontSize="12px" color="gray.600">Imagen actual</Text>
+                      </HStack>
+                    ) : (
+                      <Text fontSize="12px" color="gray.400" mb={2}>
+                        {imagenesAEliminar[index] ? "Se eliminará la imagen al guardar" : "Sin imagen"}
+                      </Text>
+                    )}
+
+                    <HStack>
+                      <Button
+                        as="label"
+                        htmlFor={`foto-input-${anuncio.id}`}
+                        cursor="pointer"
+                        bg="gray.100"
+                        _hover={{ bg: "gray.200" }}
+                        fontSize="13px"
+                        size="sm"
+                      >
+                        📸 {anuncio.imagen || archivosNuevaFoto[index] ? "Cambiar foto" : "Subir foto"}
+                      </Button>
+                      <input
+                        id={`foto-input-${anuncio.id}`}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => alCambiarFoto(index, e)}
+                        style={{ display: "none" }}
+                      />
+                      {((anuncio.imagen && !imagenesAEliminar[index]) || archivosNuevaFoto[index]) && (
+                        <Button
+                          size="sm"
+                          bg="red.50"
+                          color="red.600"
+                          fontSize="13px"
+                          _hover={{ bg: "red.100" }}
+                          onClick={() => eliminarFotoActual(index)}
+                        >
+                          🗑️ Quitar foto
+                        </Button>
+                      )}
+                    </HStack>
+                  </Box>
+
                   <Input value={anuncio.precio} onChange={(e) => cambiarCampo(index, "precio", e.target.value)} />
                   <Select value={anuncio.ubicacion} onChange={(e) => cambiarCampo(index, "ubicacion", e.target.value)}>
                     <option value="2000">Edificio 2000</option>
@@ -190,7 +328,16 @@ export default function MisAnunciosPage() {
                     <option value="agotado">Agotado</option>
                   </Select>
 
-                  <Button bg="#4f46e5" color="white" borderRadius="99px" fontWeight="700" _hover={{ bg: "#4338ca" }} onClick={() => guardarCambios(anuncio)}>
+                  <Button
+                    bg="#4f46e5"
+                    color="white"
+                    borderRadius="99px"
+                    fontWeight="700"
+                    _hover={{ bg: "#4338ca" }}
+                    isLoading={subiendoIndex === index}
+                    loadingText="Guardando..."
+                    onClick={() => guardarCambios(anuncio, index)}
+                  >
                     Guardar cambios
                   </Button>
                   <Button 
