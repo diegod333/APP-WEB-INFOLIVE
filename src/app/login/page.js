@@ -44,12 +44,14 @@ export default function Login() {
     }
 
     try {
-      const respuesta = await fetch("/api/anuncios", {
+      const respuesta = await fetch("/api/auth", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: token.trim() }),
-      });
-
+        headers: {
+          "Content-Type": "application/json",},
+          body: JSON.stringify({
+            codigo: token.trim(),
+          }),
+        });
       
       const contentType = respuesta.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
