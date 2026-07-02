@@ -1,4 +1,5 @@
 import { google } from "googleapis";
+import { registrarLog } from "@/lib/logs";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,10 @@ function getSheetsClient() {
 
 export async function DELETE(request) {
   try {
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded
+    ? forwarded.split(",")[0].trim()
+    : request.headers.get("x-real-ip") || "Desconocida";
     const body = await request.json();
     const sheets = getSheetsClient();
 
@@ -36,6 +41,12 @@ export async function DELETE(request) {
         ],
       },
     });
+    await registrarLog(
+      body.dueno_anuncio || "Desconocido",
+      "ELIMINAR_ANUNCIO",
+      `Row: ${body.rowNumber} | ID: ${body.id || "N/A"}`,
+      ip
+    );
 
     return Response.json({
       ok: true,
@@ -51,8 +62,12 @@ export async function DELETE(request) {
   }
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded
+    ? forwarded.split(",")[0].trim()
+    : request.headers.get("x-real-ip") || "Desconocida";
     const sheets = getSheetsClient();
 
     const res = await sheets.spreadsheets.values.get({
@@ -91,6 +106,10 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded
+    ? forwarded.split(",")[0].trim()
+    : request.headers.get("x-real-ip") || "Desconocida";
     const { token } = await request.json();
     const tokenLimpio = token.trim().toUpperCase();
 
@@ -109,6 +128,12 @@ export async function POST(request) {
     );
 
     if (filaUsuario) {
+      await registrarLog(
+        filaUsuario[1] || "Desconocido",
+        "LOGIN_API_ANUNCIOS",
+        `Token: ${tokenLimpio}`,
+        ip
+      );
       return Response.json({
         ok: true,
         usuario: {
@@ -128,9 +153,13 @@ export async function POST(request) {
 
 export async function PUT(request) {
   try {
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded
+    ? forwarded.split(",")[0].trim()
+    : request.headers.get("x-real-ip") || "Desconocida";
+    
     const body = await request.json();
     const sheets = getSheetsClient();
-
   
     if (body.rowNumber) {
       await sheets.spreadsheets.values.update({
@@ -154,7 +183,13 @@ export async function PUT(request) {
           ],
         },
       });
-      
+      await registrarLog(
+        body.dueno_anuncio,
+        "EDITAR_ANUNCIO",
+        `ID: ${body.id} | Título: ${body.titulo}`,
+        ip
+      );
+
       return Response.json({
         ok: true,
         message: "Anuncio actualizado correctamente",
@@ -183,6 +218,12 @@ export async function PUT(request) {
         ],
       },
     });
+    await registrarLog(
+      body.dueno_anuncio,
+      "CREAR_ANUNCIO",
+      `ID: ${body.id} | Título: ${body.titulo}`,
+      ip
+    );
 
     return Response.json({
       ok: true,
