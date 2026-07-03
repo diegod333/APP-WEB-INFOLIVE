@@ -18,6 +18,24 @@ export default function Home() {
   const [anuncios, setAnuncios] = useState([]);
   const { usuario, cerrarSesion } = useSesion();
 
+  const obtenerEstado = (horario) => {
+  if (!horario || !horario.includes(" - ")) return "activo";
+
+  const ahora = new Date();
+  const minutosActuales = ahora.getHours() * 60 + ahora.getMinutes();
+
+  const [inicio, fin] = horario.split(" - ");
+  const [hI, mI] = inicio.split(":").map(Number);
+  const [hF, mF] = fin.split(":").map(Number);
+
+  const inicioMin = hI * 60 + mI;
+  const finMin = hF * 60 + mF;
+
+  if (minutosActuales > finMin) return "agotado";
+  if (minutosActuales < inicioMin) return "futuro";
+  return "activo";
+};
+
   const cargarAnuncios = async () => {
     try {
       const res = await fetch("/api/anuncios");
@@ -198,8 +216,11 @@ export default function Home() {
             ) : (
               <VStack spacing={4} w="full">
                 {anunciosOrdenados.map((anuncio) => (
-                  <TarjetaAnuncios key={anuncio.id} anuncio={anuncio} />
-                ))}
+                  <TarjetaAnuncios key={anuncio.id}
+                  anuncio={anuncio}
+                  estado={obtenerEstado(anuncio.horario)}
+                  />
+                  ))}
               </VStack>
             )} 
           </VStack>
