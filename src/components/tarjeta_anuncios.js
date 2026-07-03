@@ -6,13 +6,17 @@ import {
   ModalCloseButton, ModalBody, useDisclosure,
 } from "@chakra-ui/react";
 
-export default function TarjetaAnuncios({ anuncio }) {
+
+
+export default function TarjetaAnuncios({ anuncio, estado }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (!anuncio) return null;
 
   const imagenPublicacion = anuncio.imagen || "https://cdn-icons-png.flaticon.com/512/10449/10449543.png";
   const inicialVendedor = anuncio.dueno_anuncio ? anuncio.dueno_anuncio.charAt(0).toUpperCase() : "U";
+
+  
 
   
   const ahora = new Date();
@@ -27,6 +31,7 @@ export default function TarjetaAnuncios({ anuncio }) {
     color: "gray.500",
     border: "gray.300",
   };
+
 
   if (anuncio.horario && anuncio.horario.includes(" - ")) {
     try {
@@ -48,10 +53,13 @@ export default function TarjetaAnuncios({ anuncio }) {
       if (anuncioActivo) {
         const tiempoRestante = minutosFin - minutosActuales;
 
-        const horasRestantes = String(Math.floor(tiempoRestante / 60)).padStart(2, "0");
-        const minutosRestantes = String(tiempoRestante % 60).padStart(2, "0");
-
-        contador = `${horasRestantes}:${minutosRestantes}`;
+        const horas = Math.floor(tiempoRestante / 60);
+        const minutos = tiempoRestante % 60;
+        if (horas > 0) {
+          contador = `${horas}H ${minutos}M`;
+        } else {
+          contador = `${minutos}M`;
+        }
 
         if (tiempoRestante > 30) {
           colorContador = {
@@ -84,13 +92,20 @@ export default function TarjetaAnuncios({ anuncio }) {
     }
   }
 
+  const esAgotado =
+  (anuncio.stock || "").toLowerCase() === "agotado" || anuncioTerminado;
+  const esDisponible = !esAgotado;
+
+  
+
   const renderPrecio = () => {
     if (!anuncio.precio) return "Consultar";
     return anuncio.precio.toString().startsWith("$") ? anuncio.precio : `$${anuncio.precio}`;
   };
 
-  const esDisponible = (anuncio.stock || "disponible").toLowerCase() === "disponible";
-  const colorPuntoStock = esDisponible ? "green.400" : "red.400";
+  const colorPuntoStock = esAgotado ? "red.400" : "green.400";
+
+  
 
   return (
     <Box
@@ -151,8 +166,11 @@ export default function TarjetaAnuncios({ anuncio }) {
                   ⏳ {contador}
                 </Box>
               )}
+              
 
               <Box
+              
+
                 w="10px"
                 h="10px"
                 borderRadius="full"
@@ -262,9 +280,9 @@ export default function TarjetaAnuncios({ anuncio }) {
                   )}
                   <HStack spacing={1.5}>
                     <Box w="10px" h="10px" borderRadius="full" bg={colorPuntoStock} flexShrink={0} />
-                    <Text fontSize="12px" fontWeight="700" color={esDisponible ? "green.600" : "red.500"}>
-                      {esDisponible ? "Disponible" : "Agotado"}
-                    </Text>
+                    <Text fontSize="12px" fontWeight="700" color={esAgotado ? "red.500" : "green.600"}>
+                      {esAgotado ? "Agotado" : "Disponible"}
+                      </Text>
                   </HStack>
                 </HStack>
               </HStack>
