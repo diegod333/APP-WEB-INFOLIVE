@@ -21,11 +21,33 @@ import { useSesion } from "@/context/SessionContext";
 
 export default function Login() {
   const [token, setToken] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [necesitaNombre, setNecesitaNombre] = useState(false);
   const [cargando, setCargando] = useState(false);
   
   const toast = useToast();
   const router = useRouter();
   const { iniciarSesion } = useSesion();
+
+  const validarCredencial = async (codigo, nombreAEnviar) => {
+    const respuesta = await fetch("/api/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        codigo,
+        nombre: nombreAEnviar,
+      }),
+    });
+
+    const contentType = respuesta.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new Error("El servidor no devolvió un JSON válido. Revisa las variables de entorno.");
+    }
+
+    return { respuesta, resultado: await respuesta.json() };
+  };
 
   const manejarLogin = async (e) => {
     e.preventDefault();
@@ -43,26 +65,40 @@ export default function Login() {
       return;
     }
 
-    try {
-      const respuesta = await fetch("/api/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",},
-          body: JSON.stringify({
-            codigo: token.trim(),
-          }),
-        });
-      
-      const contentType = respuesta.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("El servidor no devolvió un JSON válido. Revisa las variables de entorno.");
-      }
+    if (necesitaNombre && nombre.trim() === "") {
+      setCargando(false);
+      toast({
+        title: "Nombre requerido",
+        description: "Elige un nombre de usuario para continuar.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
 
-      const resultado = await respuesta.json();
+    try {
+      const { respuesta, resultado } = await validarCredencial(
+        token.trim(),
+        necesitaNombre ? nombre.trim() : ""
+      );
 
       setTimeout(() => {
         setCargando(false);
-        
+
+        // Primera vez: el código existe pero no tiene nombre asignado todavía
+        if (resultado.necesitaNombre) {
+          setNecesitaNombre(true);
+          toast({
+            title: "¡Es tu primera vez!",
+            description: resultado.message || "Elige un nombre de usuario para continuar.",
+            status: "info",
+            duration: 3000,
+            isClosable: true,
+          });
+          return;
+        }
+
         if (!respuesta.ok || !resultado.ok) {
           toast({
             title: "Token inválido",
@@ -117,7 +153,9 @@ export default function Login() {
               Acceso Institucional
             </Heading>
             <Text fontSize="13px" color="gray.500">
-              Ingresa tu código asignado por nosotros!
+              {necesitaNombre
+                ? "Elige un nombre de usuario para tu primera vez"
+                : "Ingresa tu código asignado por nosotros!"}
             </Text>
           </VStack>
 
@@ -137,10 +175,32 @@ export default function Login() {
                   letterSpacing="1px"
                   fontWeight="600"
                   value={token}
+                  isDisabled={necesitaNombre}
                   onChange={(e) => setToken(e.target.value)}
                   _focus={{ borderColor: "#4f46e5", bg: "white" }}
                 />
               </FormControl>
+
+              {necesitaNombre && (
+                <FormControl id="user-nombre" isRequired>
+                  <FormLabel fontSize="13px" fontWeight="600" color="gray.700" textAlign="center" mb={2}>
+                    ¿Cómo quieres que te llamemos?
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    placeholder="EJ: Juan Rodríguez"
+                    borderRadius="10px"
+                    fontSize="14px"
+                    bg="gray.50"
+                    textAlign="center"
+                    fontWeight="600"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    _focus={{ borderColor: "#4f46e5", bg: "white" }}
+                    autoFocus
+                  />
+                </FormControl>
+              )}
 
               <Button
                 type="submit"
@@ -154,8 +214,23 @@ export default function Login() {
                 isLoading={cargando}
                 _hover={{ bg: "#4338ca" }}
               >
-                Validar Acceso
+                {necesitaNombre ? "Confirmar nombre y continuar" : "Validar Acceso"}
               </Button>
+
+              {necesitaNombre && (
+                <Text
+                  fontSize="12px"
+                  color="gray.400"
+                  cursor="pointer"
+                  _hover={{ color: "#4f46e5", textDecoration: "underline" }}
+                  onClick={() => {
+                    setNecesitaNombre(false);
+                    setNombre("");
+                  }}
+                >
+                  ← Usar otro código
+                </Text>
+              )}
             </VStack>
           </form>
 
