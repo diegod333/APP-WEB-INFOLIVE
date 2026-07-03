@@ -171,10 +171,6 @@ export default function Home() {
                       Mis anuncios
                     </MenuItem>
                     <MenuDivider borderColor="gray.100" my={1} />
-                    <MenuItem as={Link} href="/anuncios-fav" fontSize="13px" fontWeight="500" color="gray.700" borderRadius="8px" _hover={{ bg: "gray.50", color: "#4f46e5" }}>
-                      Anuncios guardados
-                    </MenuItem>
-                    <MenuDivider borderColor="gray.100" my={1} />
                     <MenuItem fontSize="13px" fontWeight="600" color="red.500" borderRadius="8px" _hover={{ bg: "red.50" }} onClick={cerrarSesion}>
                       Cerrar sesión
                     </MenuItem>
